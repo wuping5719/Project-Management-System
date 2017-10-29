@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmb.pms.core.dao.InterTrainingDAO" >
+  <resultMap id="BaseResultMap" type="InterTraining" >
+    <id column="TraID" property="traID" jdbcType="INTEGER" />
+    <result column="TraSegment" property="traSegment" jdbcType="VARCHAR" />
+    <result column="TraTime" property="traTime" jdbcType="TIMESTAMP" />
+    <result column="TraContent" property="traContent" jdbcType="VARCHAR" />
+    <result column="TraSpeaker" property="traSpeaker" jdbcType="VARCHAR" />
+    <result column="TraParticipant" property="traParticipant" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    TraID, TraSegment, TraTime, TraContent, TraSpeaker, TraParticipant
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from intertraining
+    where TraID = #{traID,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectTotalNum" resultType="Integer" >
+    select count(*) from intertraining
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="traSpeaker != null and traSpeaker != '' ">
+			and TraSpeaker LIKE CONCAT(CONCAT('%', #{traSpeaker}),'%')
+		</if>
+		<if test="traTime != null and traTime != '' ">
+		    and TraTime = #{traTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="traContent != null and traContent != '' ">
+		    and TraContent LIKE CONCAT(CONCAT('%', #{traContent}),'%')
+		</if>
+	</trim>
+  </select>
+  
+  <select id="selectInterTrainings" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from intertraining
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="traSpeaker != null and traSpeaker != '' ">
+			and TraSpeaker LIKE CONCAT(CONCAT('%', #{traSpeaker}),'%')
+		</if>
+		<if test="traTime != null and traTime != '' ">
+		    and TraTime = #{traTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="traContent != null and traContent != '' ">
+		    and TraContent LIKE CONCAT(CONCAT('%', #{traContent}),'%')
+		</if>
+	</trim>
+	Limit #{startIndex}, #{pageSize}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from intertraining
+    where TraID = #{traID,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="InterTraining" >
+    insert into intertraining (TraID, TraSegment, TraTime, 
+      TraContent, TraSpeaker, TraParticipant
+      )
+    values (#{traID,jdbcType=INTEGER}, #{traSegment,jdbcType=VARCHAR}, #{traTime,jdbcType=TIMESTAMP}, 
+      #{traContent,jdbcType=VARCHAR}, #{traSpeaker,jdbcType=VARCHAR}, #{traParticipant,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="InterTraining" >
+    insert into intertraining
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="traID != null" >
+        TraID,
+      </if>
+      <if test="traSegment != null" >
+        TraSegment,
+      </if>
+      <if test="traTime != null" >
+        TraTime,
+      </if>
+      <if test="traContent != null" >
+        TraContent,
+      </if>
+      <if test="traSpeaker != null" >
+        TraSpeaker,
+      </if>
+      <if test="traParticipant != null" >
+        TraParticipant,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="traID != null" >
+        #{traID,jdbcType=INTEGER},
+      </if>
+      <if test="traSegment != null" >
+        #{traSegment,jdbcType=VARCHAR},
+      </if>
+      <if test="traTime != null" >
+        #{traTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="traContent != null" >
+        #{traContent,jdbcType=VARCHAR},
+      </if>
+      <if test="traSpeaker != null" >
+        #{traSpeaker,jdbcType=VARCHAR},
+      </if>
+      <if test="traParticipant != null" >
+        #{traParticipant,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="InterTraining" >
+    update intertraining
+    <set >
+      <if test="traSegment != null" >
+        TraSegment = #{traSegment,jdbcType=VARCHAR},
+      </if>
+      <if test="traTime != null" >
+        TraTime = #{traTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="traContent != null" >
+        TraContent = #{traContent,jdbcType=VARCHAR},
+      </if>
+      <if test="traSpeaker != null" >
+        TraSpeaker = #{traSpeaker,jdbcType=VARCHAR},
+      </if>
+      <if test="traParticipant != null" >
+        TraParticipant = #{traParticipant,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where TraID = #{traID,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="InterTraining" >
+    update intertraining
+    set TraSegment = #{traSegment,jdbcType=VARCHAR},
+      TraTime = #{traTime,jdbcType=TIMESTAMP},
+      TraContent = #{traContent,jdbcType=VARCHAR},
+      TraSpeaker = #{traSpeaker,jdbcType=VARCHAR},
+      TraParticipant = #{traParticipant,jdbcType=VARCHAR}
+    where TraID = #{traID,jdbcType=INTEGER}
+  </update>
+</mapper>

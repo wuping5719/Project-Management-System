@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmb.pms.core.dao.UserDAO">
+	<resultMap id="BaseResultMap" type="User">
+		<id column="UserID" property="userID" jdbcType="INTEGER" />
+		<result column="UserWorkID" property="userWorkID" jdbcType="CHAR" />
+		<result column="UserPassword" property="userPassword" jdbcType="VARCHAR" />
+		<result column="UserName" property="userName" jdbcType="VARCHAR" />
+		<result column="UserMobile" property="userMobile" jdbcType="VARCHAR" />
+		<result column="UserEmail" property="userEmail" jdbcType="VARCHAR" />
+		<result column="GroupName" property="groupName" jdbcType="VARCHAR" />
+		<result column="DevRoom" property="devRoom" jdbcType="VARCHAR" />
+		<result column="UserPass" property="userPass" jdbcType="CHAR" />
+		<result column="UserCreTime" property="userCreTime" jdbcType="TIMESTAMP" />
+		<result column="UserModTime" property="userModTime" jdbcType="TIMESTAMP" />
+		<result column="UserCreator" property="userCreator" jdbcType="VARCHAR" />
+		<result column="UserModifier" property="userModifier" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		UserID, UserWorkID, UserPassword, UserName, UserMobile,
+		UserEmail, GroupName, DevRoom, UserPass,
+		UserCreTime, UserModTime, UserCreator, UserModifier
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where UserID = #{userID,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByUserWorkID" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from user
+		where UserWorkID = #{userWorkID,jdbcType=CHAR} 
+		limit 1
+	</select>
+ 
+  <select id="selectTotalNum" resultType="Integer" >
+    select count(*) from user
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="userName != null and userName != '' ">
+			and UserName LIKE CONCAT(CONCAT('%', #{userName}),'%')
+		</if>
+		<if test="userWorkID != null and userWorkID != '' ">
+		    and UserWorkID LIKE CONCAT(CONCAT('%', #{userWorkID}),'%')
+		</if>
+	</trim>
+  </select>
+  
+  <select id="selectUsers" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="userName != null and userName != '' ">
+			and UserName LIKE CONCAT(CONCAT('%', #{userName}),'%')
+		</if>
+		<if test="userWorkID != null and userWorkID != '' ">
+		    and UserWorkID LIKE CONCAT(CONCAT('%', #{userWorkID}),'%')
+		</if>
+	</trim>
+	Limit #{startIndex}, #{pageSize}
+  </select>
+     
+ <select id="selectAllUsers" resultMap="BaseResultMap" >
+    select  UserID, UserWorkID, UserName
+    from user
+  </select>
+  
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from user
+		where UserID = #{userID,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insert" parameterType="User">
+		insert into User (UserID,
+		UserWorkID, UserPassword, UserName,
+		UserMobile, UserEmail, GroupName, DevRoom, UserPass
+		UserCreTime, UserModTime, UserCreator, UserModifier)
+		values (#{userID,jdbcType=INTEGER}, #{userWorkID,jdbcType=CHAR},
+		#{userPassword,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},
+		#{userMobile,jdbcType=CHAR}, #{userEmail,jdbcType=VARCHAR},
+		#{groupName,jdbcType=VARCHAR}, #{devRoom,jdbcType=VARCHAR},
+		#{userPass,jdbcType=CHAR},
+		#{userCreTime,jdbcType=TIMESTAMP}, #{userModTime,jdbcType=TIMESTAMP},
+		#{userCreator,jdbcType=VARCHAR}, #{userModifier,jdbcType=VARCHAR} )
+	</insert>
+
+	<insert id="insertSelective" parameterType="User">
+		insert into user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userID != null">
+				UserID,
+			</if>
+			<if test="userWorkID != null">
+				UserWorkID,
+			</if>
+			<if test="userPassword != null">
+				UserPassword,
+			</if>
+			<if test="userName != null">
+				UserName,
+			</if>
+			<if test="userMobile != null">
+				UserMobile,
+			</if>
+			<if test="userEmail != null">
+				UserEmail,
+			</if>
+			<if test="groupName != null">
+				GroupName,
+			</if>
+			<if test="devRoom != null">
+				DevRoom,
+			</if>
+			<if test="userPass != null">
+				UserPass,
+			</if>
+			<if test="userCreTime != null">
+				UserCreTime,
+			</if>
+			<if test="userModTime != null">
+				UserModTime,
+			</if>
+			<if test="userCreator != null">
+				UserCreator,
+			</if>
+			<if test="userModifier != null">
+				UserModifier,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userID != null">
+				#{userID,jdbcType=INTEGER},
+			</if>
+			<if test="userWorkID != null">
+				#{userWorkID,jdbcType=CHAR},
+			</if>
+			<if test="userPassword != null">
+				#{userPassword,jdbcType=VARCHAR},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="userMobile != null">
+				#{userMobile,jdbcType=CHAR},
+			</if>
+			<if test="userEmail != null">
+				#{userEmail,jdbcType=VARCHAR},
+			</if>
+			<if test="groupName != null">
+				#{groupName,jdbcType=VARCHAR},
+			</if>
+			<if test="devRoom != null">
+				#{devRoom,jdbcType=VARCHAR},
+			</if>
+			<if test="userPass != null">
+				#{userPass,jdbcType=CHAR},
+			</if>
+			<if test="userCreTime != null">
+				#{userCreTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="userModTime != null">
+				#{userModTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="userCreator != null">
+				#{userCreator,jdbcType=VARCHAR},
+			</if>
+			<if test="userModifier != null">
+				#{userModifier,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+<update id="updateByPrimaryKeySelective" parameterType="User" >
+    update user
+    <set >
+      <if test="userWorkID != null" >
+        UserWorkID = #{userWorkID,jdbcType=CHAR},
+      </if>
+      <if test="userPassword != null" >
+        UserPassword = #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        UserName = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userMobile != null" >
+        UserMobile = #{userMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null" >
+        UserEmail = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="groupName != null" >
+        GroupName = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="devRoom != null" >
+        DevRoom = #{devRoom,jdbcType=VARCHAR},
+      </if>
+      <if test="userPass != null" >
+        UserPass = #{userPass,jdbcType=VARCHAR},
+      </if>
+      <if test="userCreTime != null" >
+        UserCreTime = #{userCreTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userModTime != null" >
+        UserModTime = #{userModTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userCreator != null" >
+        UserCreator = #{userCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="userModifier != null" >
+        UserModifier = #{userModifier,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where UserID = #{userID,jdbcType=INTEGER}
+  </update>
+</mapper>

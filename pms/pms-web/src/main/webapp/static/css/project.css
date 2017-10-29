@@ -1,0 +1,57 @@
+@charset "utf-8";
+
+#queryBar {
+	margin: 5px 0 1px 0;
+	width: 100%;
+	height: 5%;
+}
+
+#projListTable {
+	width: 100%;
+	height: 85%;
+	text-align:center;
+	overflow:scroll;
+	overflow-x:hidden;
+	overflow-y:hidden;
+}
+
+#projTabHead {
+	text-align:center;
+	margin: 2px 20px 0px 20px;
+	width: 97%;
+	table-layout:fixed;
+}
+#projTabHead tr {
+    height: 40px;
+    overflow: hidden;
+}
+#projTabHead td {
+    border: 1px solid #a8a5de;
+    white-space: nowrap;
+    overflow: hidden;
+    word-break: keep-all;
+    text-overflow: ellipsis;
+} 
+
+#projTab {
+	margin: 2px 20px 10px 20px;
+	width: 97%;
+	table-layout:fixed;
+}
+#projTab tr {
+    height: 40px;
+    overflow: hidden;
+}
+#projTab td {
+    border: 1px solid #a8a5de;
+    white-space: nowrap;
+    overflow: hidden;
+    word-break: keep-all;
+    text-overflow: ellipsis;
+} 
+
+#projPage {
+	width: 100%;
+	height: 30px;
+	text-align:center;
+}

@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmb.pms.core.dao.ProjectDAO" >
+  <resultMap id="BaseResultMap" type="Project" >
+    <id column="ProjID" property="projID" jdbcType="INTEGER" />
+    <result column="ProjNumber" property="projNumber" jdbcType="CHAR" />
+    <result column="ProjName" property="projName" jdbcType="VARCHAR" />
+    <result column="ProjReqNum" property="projReqNum" jdbcType="VARCHAR" />
+    <result column="ProjStartDate" property="projStartDate" jdbcType="DATE" />
+    <result column="ProjSTStartDate" property="projSTStartDate" jdbcType="DATE" />
+    <result column="ProjSTEndDate" property="projSTEndDate" jdbcType="DATE" />
+    <result column="ProjUATStartDate" property="projUATStartDate" jdbcType="DATE" />
+    <result column="ProjOnlineDate" property="projOnlineDate" jdbcType="DATE" />
+    <result column="ProjExpEndDate" property="projExpEndDate" jdbcType="DATE" />
+    <result column="ProjOrganizeType" property="projOrganizeType" jdbcType="CHAR" />
+    <result column="ProjPerInCharge" property="projPerInCharge" jdbcType="VARCHAR" />
+    <result column="ProjFuncPoint" property="projFuncPoint" jdbcType="REAL" />
+    <result column="ProjMember" property="projMember" jdbcType="VARCHAR" />
+    <result column="ProjCurState" property="projCurState" jdbcType="CHAR" />
+    <result column="ProjDependID" property="projDependID" jdbcType="VARCHAR" />
+    <result column="ProjCouBusiness" property="projCouBusiness" jdbcType="VARCHAR" />
+    <result column="ProjRemark" property="projRemark" jdbcType="VARCHAR" />
+    <result column="ProjCreTime" property="projCreTime" jdbcType="TIMESTAMP" />
+    <result column="ProjModTime" property="projModTime" jdbcType="TIMESTAMP" />
+    <result column="ProjCreator" property="projCreator" jdbcType="VARCHAR" />
+    <result column="ProjModifier" property="projModifier" jdbcType="VARCHAR" />
+  </resultMap>  
+  
+  <resultMap id="BaseResultMap2" type="java.lang.String" >    
+    <result column="ProjNumber" property="projNumber" jdbcType="CHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    ProjID, ProjNumber, ProjName, ProjReqNum, ProjStartDate, ProjSTStartDate, ProjSTEndDate, 
+    ProjUATStartDate, ProjOnlineDate, ProjExpEndDate, ProjOrganizeType, ProjPerInCharge, 
+    ProjFuncPoint, ProjMember, ProjCurState, ProjDependID, ProjCouBusiness, ProjRemark, 
+    ProjCreTime, ProjModTime, ProjCreator, ProjModifier
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from project
+    where ProjID = #{projID,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByProjNumber" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from project
+    where ProjNumber = #{projNumber,jdbcType=CHAR}  Limit 1
+  </select>
+  
+  <select id="selectProjNumber" resultMap="BaseResultMap2">
+    select distinct ProjNumber from project order by ProjNumber
+  </select>
+
+  <select id="selectTotalNum" resultType="Integer" >
+    select count(*) from project
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="projNumber != null and projNumber != '' ">
+			and ProjNumber LIKE CONCAT(CONCAT('%', #{projNumber}),'%')
+		</if>
+		<if test="projReqNum != null and projReqNum != '' ">
+		    and ProjReqNum LIKE CONCAT(CONCAT('%', #{projReqNum}),'%')
+		</if>
+		<if test="projName != null and projName != '' ">
+		    and ProjName LIKE CONCAT(CONCAT('%', #{projName}),'%')
+		</if>
+		<if test="projPerInCharge != null and projPerInCharge != '' ">
+		    and ProjPerInCharge = #{projPerInCharge,jdbcType=CHAR}		    
+		</if>
+		<if test="projState != null and projState != '' ">
+		    and ProjCurState LIKE CONCAT(#{projState},'%')		    
+		</if>
+		    and ProjCurState != '16'	    
+	</trim>
+  </select>
+  
+  <select id="selectFinishTotalNum" resultType="Integer" >
+    select count(*) from project
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="projNumber != null and projNumber != '' ">
+			and ProjNumber LIKE CONCAT(CONCAT('%', #{projNumber}),'%')
+		</if>
+		<if test="projReqNum != null and projReqNum != '' ">
+		    and ProjReqNum LIKE CONCAT(CONCAT('%', #{projReqNum}),'%')
+		</if>
+		<if test="projName != null and projName != '' ">
+		    and ProjName LIKE CONCAT(CONCAT('%', #{projName}),'%')
+		</if>
+		<if test="projPerInCharge != null and projPerInCharge != '' ">
+		    and ProjPerInCharge = #{projPerInCharge,jdbcType=CHAR}
+		</if>
+		<if test="projOnlineStart != null ">
+		    and ProjOnlineDate &gt;= #{projOnlineStart,jdbcType=DATE}
+		</if>
+		<if test="projOnlineEnd != null ">
+		    and ProjOnlineDate &lt;= #{projOnlineEnd,jdbcType=DATE}
+		</if>	
+		and ProjCurState = '16'	    
+	</trim>	    
+  </select>
+ 
+   <select id="selectProject" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from project
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="projNumber != null and projNumber != '' ">
+			and ProjNumber LIKE CONCAT(CONCAT('%', #{projNumber}),'%')
+		</if>
+		<if test="projReqNum != null and projReqNum != '' ">
+			and ProjReqNum LIKE CONCAT(CONCAT('%', #{projReqNum}),'%')
+		</if>
+		<if test="projName != null and projName != '' ">
+		    and ProjName LIKE CONCAT(CONCAT('%', #{projName}),'%')
+		</if>
+		<if test="projPerInCharge != null and projPerInCharge != '' ">
+		    and ProjPerInCharge = #{projPerInCharge,jdbcType=CHAR}
+		</if>
+		<if test="projState != null and projState != '' ">
+		    and ProjCurState LIKE CONCAT(#{projState},'%')		    
+		</if>
+		    and ProjCurState != '16'
+	</trim>
+	order by ProjOnlineDate,ProjNumber Limit #{startIndex}, #{pageSize}
+  </select> 
+  
+  <select id="selectFinishProject" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from project
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="projNumber != null and projNumber != '' ">
+			and ProjNumber LIKE CONCAT(CONCAT('%', #{projNumber}),'%')
+		</if>
+		<if test="projReqNum != null and projReqNum != '' ">
+			and ProjReqNum LIKE CONCAT(CONCAT('%', #{projReqNum}),'%')
+		</if>
+		<if test="projName != null and projName != '' ">
+		    and ProjName LIKE CONCAT(CONCAT('%', #{projName}),'%')
+		</if>
+		<if test="projPerInCharge != null and projPerInCharge != '' ">
+		    and ProjPerInCharge = #{projPerInCharge,jdbcType=CHAR}
+		</if>
+		<if test="projOnlineStart != null ">
+		    and ProjOnlineDate &gt;= #{projOnlineStart,jdbcType=DATE}
+		</if>
+		<if test="projOnlineEnd != null ">
+		    and ProjOnlineDate &lt;= #{projOnlineEnd,jdbcType=DATE}
+		</if>
+		and ProjCurState = '16' 
+	</trim>	    
+	 order by ProjOnlineDate Limit #{startIndex}, #{pageSize}
+  </select> 
+  
+  <select id="selectByReqNum" resultType="Integer" >
+    select count(*) from project 
+    where ProjReqNum like concat(concat('%', #{projReqNum}),'%')
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from project
+    where ProjID = #{projID,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="Project" >
+    insert into project (ProjID, ProjNumber, ProjName, 
+      ProjReqNum, ProjStartDate, ProjSTStartDate, 
+      ProjSTEndDate, ProjUATStartDate, ProjOnlineDate, 
+      ProjExpEndDate, ProjOrganizeType, ProjPerInCharge, 
+      ProjFuncPoint, ProjMember, ProjCurState, 
+      ProjDependID, ProjCouBusiness, ProjRemark, 
+      ProjCreTime, ProjModTime, ProjCreator, 
+      ProjModifier)
+    values (#{projID,jdbcType=INTEGER}, #{projNumber,jdbcType=CHAR}, #{projName,jdbcType=VARCHAR}, 
+      #{projReqNum,jdbcType=VARCHAR}, #{projStartDate,jdbcType=DATE}, #{projSTStartDate,jdbcType=DATE}, 
+      #{projSTEndDate,jdbcType=DATE}, #{projUATStartDate,jdbcType=DATE}, #{projOnlineDate,jdbcType=DATE}, 
+      #{projExpEndDate,jdbcType=DATE}, #{projOrganizeType,jdbcType=CHAR}, #{projPerInCharge,jdbcType=VARCHAR}, 
+      #{projFuncPoint,jdbcType=REAL}, #{projMember,jdbcType=VARCHAR}, #{projCurState,jdbcType=CHAR}, 
+      #{projDependID,jdbcType=VARCHAR}, #{projCouBusiness,jdbcType=VARCHAR}, #{projRemark,jdbcType=VARCHAR}, 
+      #{projCreTime,jdbcType=TIMESTAMP}, #{projModTime,jdbcType=TIMESTAMP}, #{projCreator,jdbcType=VARCHAR}, 
+      #{projModifier,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="Project" >
+    insert into project
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="projID != null" >
+        ProjID,
+      </if>
+      <if test="projNumber != null" >
+        ProjNumber,
+      </if>
+      <if test="projName != null" >
+        ProjName,
+      </if>
+      <if test="projReqNum != null" >
+        ProjReqNum,
+      </if>
+      <if test="projStartDate != null" >
+        ProjStartDate,
+      </if>
+      <if test="projSTStartDate != null" >
+        ProjSTStartDate,
+      </if>
+      <if test="projSTEndDate != null" >
+        ProjSTEndDate,
+      </if>
+      <if test="projUATStartDate != null" >
+        ProjUATStartDate,
+      </if>
+      <if test="projOnlineDate != null" >
+        ProjOnlineDate,
+      </if>
+      <if test="projExpEndDate != null" >
+        ProjExpEndDate,
+      </if>
+      <if test="projOrganizeType != null" >
+        ProjOrganizeType,
+      </if>
+      <if test="projPerInCharge != null" >
+        ProjPerInCharge,
+      </if>
+      <if test="projFuncPoint != null" >
+        ProjFuncPoint,
+      </if>
+      <if test="projMember != null" >
+        ProjMember,
+      </if>
+      <if test="projCurState != null" >
+        ProjCurState,
+      </if>
+      <if test="projDependID != null" >
+        ProjDependID,
+      </if>
+      <if test="projCouBusiness != null" >
+        ProjCouBusiness,
+      </if>
+      <if test="projRemark != null" >
+        ProjRemark,
+      </if>
+      <if test="projCreTime != null" >
+        ProjCreTime,
+      </if>
+      <if test="projModTime != null" >
+        ProjModTime,
+      </if>
+      <if test="projCreator != null" >
+        ProjCreator,
+      </if>
+      <if test="projModifier != null" >
+        ProjModifier,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="projID != null" >
+        #{projID,jdbcType=INTEGER},
+      </if>
+      <if test="projNumber != null" >
+        #{projNumber,jdbcType=CHAR},
+      </if>
+      <if test="projName != null" >
+        #{projName,jdbcType=VARCHAR},
+      </if>
+      <if test="projReqNum != null" >
+        #{projReqNum,jdbcType=VARCHAR},
+      </if>
+      <if test="projStartDate != null" >
+        #{projStartDate,jdbcType=DATE},
+      </if>
+      <if test="projSTStartDate != null" >
+        #{projSTStartDate,jdbcType=DATE},
+      </if>
+      <if test="projSTEndDate != null" >
+        #{projSTEndDate,jdbcType=DATE},
+      </if>
+      <if test="projUATStartDate != null" >
+        #{projUATStartDate,jdbcType=DATE},
+      </if>
+      <if test="projOnlineDate != null" >
+        #{projOnlineDate,jdbcType=DATE},
+      </if>
+      <if test="projExpEndDate != null" >
+        #{projExpEndDate,jdbcType=DATE},
+      </if>
+      <if test="projOrganizeType != null" >
+        #{projOrganizeType,jdbcType=CHAR},
+      </if>
+      <if test="projPerInCharge != null" >
+        #{projPerInCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="projFuncPoint != null" >
+        #{projFuncPoint,jdbcType=REAL},
+      </if>
+      <if test="projMember != null" >
+        #{projMember,jdbcType=VARCHAR},
+      </if>
+      <if test="projCurState != null" >
+        #{projCurState,jdbcType=CHAR},
+      </if>
+      <if test="projDependID != null" >
+        #{projDependID,jdbcType=VARCHAR},
+      </if>
+      <if test="projCouBusiness != null" >
+        #{projCouBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="projRemark != null" >
+        #{projRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="projCreTime != null" >
+        #{projCreTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projModTime != null" >
+        #{projModTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projCreator != null" >
+        #{projCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="projModifier != null" >
+        #{projModifier,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="Project" >
+    update project
+    <set >
+      <if test="projNumber != null" >
+        ProjNumber = #{projNumber,jdbcType=CHAR},
+      </if>    
+      <if test="projReqNum != null" >
+        ProjReqNum = #{projReqNum,jdbcType=VARCHAR},
+      </if>
+      <if test="projName != null" >
+        ProjName = #{projName,jdbcType=VARCHAR},
+      </if>      
+      <if test="projStartDate != null" >
+        ProjStartDate = #{projStartDate,jdbcType=DATE},
+      </if>
+      <if test="projSTStartDate != null" >
+        ProjSTStartDate = #{projSTStartDate,jdbcType=DATE},
+      </if>
+      <if test="projSTEndDate != null" >
+        ProjSTEndDate = #{projSTEndDate,jdbcType=DATE},
+      </if>
+      <if test="projUATStartDate != null" >
+        ProjUATStartDate = #{projUATStartDate,jdbcType=DATE},
+      </if>
+      <if test="projOnlineDate != null" >
+        ProjOnlineDate = #{projOnlineDate,jdbcType=DATE},
+      </if>
+      <if test="projExpEndDate != null" >
+        ProjExpEndDate = #{projExpEndDate,jdbcType=DATE},
+      </if>
+      <if test="projOrganizeType != null" >
+        ProjOrganizeType = #{projOrganizeType,jdbcType=CHAR},
+      </if>
+      <if test="projPerInCharge != null" >
+        ProjPerInCharge = #{projPerInCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="projFuncPoint != null" >
+        ProjFuncPoint = #{projFuncPoint,jdbcType=REAL},
+      </if>
+      <if test="projMember != null" >
+        ProjMember = #{projMember,jdbcType=VARCHAR},
+      </if>
+      <if test="projCurState != null" >
+        ProjCurState = #{projCurState,jdbcType=CHAR},
+      </if>
+      <if test="projDependID != null" >
+        ProjDependID = #{projDependID,jdbcType=VARCHAR},
+      </if>
+      <if test="projCouBusiness != null" >
+        ProjCouBusiness = #{projCouBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="projRemark != null" >
+        ProjRemark = #{projRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="projCreTime != null" >
+        ProjCreTime = #{projCreTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projModTime != null" >
+        ProjModTime = #{projModTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="projCreator != null" >
+        ProjCreator = #{projCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="projModifier != null" >
+        ProjModifier = #{projModifier,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ProjID = #{projID,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="Project" >
+    update project
+    set ProjNumber = #{projNumber,jdbcType=CHAR},
+      ProjName = #{projName,jdbcType=VARCHAR},
+      ProjReqNum = #{projReqNum,jdbcType=VARCHAR},
+      ProjStartDate = #{projStartDate,jdbcType=DATE},
+      ProjSTStartDate = #{projSTStartDate,jdbcType=DATE},
+      ProjSTEndDate = #{projSTEndDate,jdbcType=DATE},
+      ProjUATStartDate = #{projUATStartDate,jdbcType=DATE},
+      ProjOnlineDate = #{projOnlineDate,jdbcType=DATE},
+      ProjExpEndDate = #{projExpEndDate,jdbcType=DATE},
+      ProjOrganizeType = #{projOrganizeType,jdbcType=CHAR},
+      ProjPerInCharge = #{projPerInCharge,jdbcType=VARCHAR},
+      ProjFuncPoint = #{projFuncPoint,jdbcType=REAL},
+      ProjMember = #{projMember,jdbcType=VARCHAR},
+      ProjCurState = #{projCurState,jdbcType=CHAR},
+      ProjDependID = #{projDependID,jdbcType=VARCHAR},
+      ProjCouBusiness = #{projCouBusiness,jdbcType=VARCHAR},
+      ProjRemark = #{projRemark,jdbcType=VARCHAR},
+      ProjCreTime = #{projCreTime,jdbcType=TIMESTAMP},
+      ProjModTime = #{projModTime,jdbcType=TIMESTAMP},
+      ProjCreator = #{projCreator,jdbcType=VARCHAR},
+      ProjModifier = #{projModifier,jdbcType=VARCHAR}
+    where ProjID = #{projID,jdbcType=INTEGER}
+  </update>
+</mapper>

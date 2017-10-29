@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmb.pms.core.dao.FileInfoDAO" >
+  <resultMap id="BaseResultMap" type="FileInfo" >
+    <id column="FileID" property="fileID" jdbcType="INTEGER" />
+    <result column="FileName" property="fileName" jdbcType="VARCHAR" />
+    <result column="FileDescription" property="fileDescription" jdbcType="VARCHAR" />
+    <result column="FileType" property="fileType" jdbcType="VARCHAR" />
+    <result column="FileSize" property="fileSize" jdbcType="DOUBLE" />
+    <result column="OriginalFileName" property="originalFileName" jdbcType="VARCHAR" />
+    <result column="CreateTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="ModifyTime" property="modifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    FileID, FileName, FileDescription, FileType, FileSize, OriginalFileName, CreateTime, 
+    ModifyTime
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from fileinfo
+    where FileID = #{fileID,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectTotalNum" resultType="Integer" >
+    select count(*) from fileinfo
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="fileName != null and fileName != '' ">
+			and FileName LIKE CONCAT(CONCAT('%', #{fileName}),'%')
+		</if>
+		<if test="fileType != null and fileType != '' ">
+		    and FileType = #{fileType,jdbcType=VARCHAR}
+		</if>
+	</trim>
+  </select>
+  
+  <select id="selectFileInfos" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from fileinfo
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="fileName != null and fileName != '' ">
+			and FileName LIKE CONCAT(CONCAT('%', #{fileName}),'%')
+		</if>
+		<if test="fileType != null and fileType != '' ">
+		    and FileType = #{fileType,jdbcType=VARCHAR}
+		</if>
+	</trim>
+	Limit #{startIndex}, #{pageSize}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from fileinfo
+    where FileID = #{fileID,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="FileInfo" >
+    insert into fileinfo (FileID, FileName, FileDescription, 
+      FileType, FileSize, OriginalFileName, 
+      CreateTime, ModifyTime)
+    values (#{fileID,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR}, #{fileDescription,jdbcType=VARCHAR}, 
+      #{fileType,jdbcType=VARCHAR}, #{fileSize,jdbcType=DOUBLE}, #{originalFileName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="FileInfo" >
+    insert into fileinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fileID != null" >
+        FileID,
+      </if>
+      <if test="fileName != null" >
+        FileName,
+      </if>
+      <if test="fileDescription != null" >
+        FileDescription,
+      </if>
+      <if test="fileType != null" >
+        FileType,
+      </if>
+      <if test="fileSize != null" >
+        FileSize,
+      </if>
+      <if test="originalFileName != null" >
+        OriginalFileName,
+      </if>
+      <if test="createTime != null" >
+        CreateTime,
+      </if>
+      <if test="modifyTime != null" >
+        ModifyTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fileID != null" >
+        #{fileID,jdbcType=INTEGER},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileDescription != null" >
+        #{fileDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null" >
+        #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="fileSize != null" >
+        #{fileSize,jdbcType=DOUBLE},
+      </if>
+      <if test="originalFileName != null" >
+        #{originalFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="FileInfo" >
+    update fileinfo
+    <set >
+      <if test="fileName != null" >
+        FileName = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileDescription != null" >
+        FileDescription = #{fileDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null" >
+        FileType = #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="fileSize != null" >
+        FileSize = #{fileSize,jdbcType=DOUBLE},
+      </if>
+      <if test="originalFileName != null" >
+        OriginalFileName = #{originalFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        ModifyTime = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where FileID = #{fileID,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="FileInfo" >
+    update fileinfo
+    set FileName = #{fileName,jdbcType=VARCHAR},
+      FileDescription = #{fileDescription,jdbcType=VARCHAR},
+      FileType = #{fileType,jdbcType=VARCHAR},
+      FileSize = #{fileSize,jdbcType=DOUBLE},
+      OriginalFileName = #{originalFileName,jdbcType=VARCHAR},
+      CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      ModifyTime = #{modifyTime,jdbcType=TIMESTAMP}
+    where FileID = #{fileID,jdbcType=INTEGER}
+  </update>
+</mapper>

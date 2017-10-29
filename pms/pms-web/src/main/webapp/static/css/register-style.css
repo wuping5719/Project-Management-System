@@ -1,0 +1,84 @@
+html {  
+   height: 100%;  
+}  
+body {
+	width: 100%;
+    height: 100%;
+	font: normal 15px/1.5 Arial, Helvetica, Free Sans, sans-serif;
+	color: #000;
+	background:url(../img/bg.png) top left no-repeat;
+	-moz-background-size:cover;  
+	background-size:100% 100%;
+	-webkit-background-size: cover;
+	-o-background-size: cover;
+	position: absolute;
+}
+
+#my-form {
+	width: 30%;
+	margin: 5% 33%;
+	border: 0px solid #ccc;
+	padding: 2em 0em 1em 3em;
+	border-radius: 0px;
+	box-shadow: 0 0 2px rgba(0, 0, 0, .2);
+	background-color:transparent;
+	FormBoderStyle:none;	
+}
+
+#welcome {
+	margin: 0 600px;
+	text-align: center;
+	font-size: 30px;
+	font-weight: bold;
+	color: black;
+	font-family:FZshuTi;
+	left:100px;
+}
+
+#comments {
+	width: 350px;
+	height: 100px;
+}
+
+#submit,#reset {
+	border-top-left-radius:0.5em;
+    border-top-right-radius:0.5em;
+    border-bottom-left-radius:0.5em;
+    border-bottom-right-radius:0.5em;
+    box-shadow:0px 1px 2px rgba(0,0,0,0.2);
+    text-shadow:0px 1px 1px rgba(0,0,0,0.3);
+    color:#fefee9;
+    border-top-color:#87cefa;
+    border-right-color:#87cefa;
+    border-bottom-color:#87cefa;
+    border-left-color:#87cefa;
+    border-top-width:1%;
+    border-right-width:1%;
+    border-bottom-width:1%;
+    border-left-width:1%;
+    border-top-style:solid;
+    border-right-style:solid;
+    border-bottom-style:solid;
+    border-left-style:solid;
+    background-image:none;
+    background-attachment:scroll;
+    background-repeat:repeat;
+    background-position-x:0%;
+    background-position-y:0%;
+    background-size:auto;
+    background-origin:padding-box;
+    background-clip:padding-box;
+    background-color:#afeeee;
+    
+}
+#reset:hover,#reset:focus,#submit:hover,#submit:focus{
+	background:#00bfff;
+}
+#copyrightflg{ 	
+	background:url(../img/copyrightIcon.png) no-repeat ; 
+	vertical-align:center;
+	height:200px;
+
+	padding: 2em 0em 1em 4em;
+	border-radius: 0px;
+}

@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmb.pms.core.dao.RequirementsDAO" >
+  <resultMap id="BaseResultMap" type="Requirements" >
+    <id column="ReqID" property="reqID" jdbcType="INTEGER" />
+    <result column="ReqNum" property="reqNum" jdbcType="CHAR" />
+    <result column="ReqName" property="reqName" jdbcType="VARCHAR" />
+    <result column="ReqState" property="reqState" jdbcType="CHAR" />
+    <result column="ReqChildState" property="reqChildState" jdbcType="CHAR" />
+    <result column="ReqAssessmentDate" property="reqAssessmentDate" jdbcType="DATE" />
+    <result column="ReqScheduleStartDate" property="reqScheduleStartDate" jdbcType="DATE" />
+    <result column="ReqScheduleDate" property="reqScheduleDate" jdbcType="DATE" />
+    <result column="ReqStartDate" property="reqStartDate" jdbcType="DATE" />
+    <result column="ReqOrganizeType" property="reqOrganizeType" jdbcType="CHAR" />
+    <result column="ReqPriority" property="reqPriority" jdbcType="CHAR" />
+    <result column="ReqContent" property="reqContent" jdbcType="VARCHAR" />
+    <result column="ReqPerInCharge" property="reqPerInCharge" jdbcType="VARCHAR" />
+    <result column="ReqMember" property="reqMember" jdbcType="VARCHAR" />
+    <result column="ReqAssessment" property="reqAssessment" jdbcType="VARCHAR" />
+    <result column="ReqAuthor" property="reqAuthor" jdbcType="VARCHAR" />
+    <result column="ReqBusDepart" property="reqBusDepart" jdbcType="VARCHAR" />
+    <result column="ReqComment" property="reqComment" jdbcType="VARCHAR" />
+    <result column="ReqCreTime" property="reqCreTime" jdbcType="TIMESTAMP" />
+    <result column="ReqModTime" property="reqModTime" jdbcType="TIMESTAMP" />
+    <result column="ReqCreator" property="reqCreator" jdbcType="VARCHAR" />
+    <result column="ReqModifier" property="reqModifier" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ReqNumResultMap" type="java.lang.String" >
+    <result column="ReqNum" property="reqNum" jdbcType="CHAR" />  
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    ReqID, ReqNum, ReqName, ReqState, ReqChildState, ReqAssessmentDate, ReqScheduleStartDate, 
+    ReqScheduleDate, ReqStartDate, ReqOrganizeType, ReqPriority, 
+    ReqContent, ReqPerInCharge, ReqMember, ReqAssessment, ReqAuthor,
+    ReqBusDepart, ReqComment, ReqCreTime, ReqModTime, ReqCreator, ReqModifier
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from requirements
+    where ReqID = #{reqID,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countReqByReqNum" resultType="Integer" >
+     select count(*) from requirements
+      where ReqNum = #{reqNum,jdbcType=CHAR}
+  </select>
+  
+  <select id="selectTotalNum" resultType="Integer" >
+    select count(*) from requirements
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="reqNum != null and reqNum != '' ">
+			and ReqNum LIKE CONCAT(CONCAT('%', #{reqNum}),'%')
+		</if>
+		<if test="reqName != null and reqName != '' ">
+		    and ReqName LIKE CONCAT(CONCAT('%', #{reqName}),'%')
+		</if>
+		<if test="reqPerInCharge != null and reqPerInCharge != '' ">
+		    and ReqPerInCharge LIKE CONCAT(CONCAT('%', #{reqPerInCharge}),'%')
+		</if>
+		<if test="assessmentDateStart != null ">
+		    and ReqAssessmentDate &gt;= #{assessmentDateStart,jdbcType=DATE}
+		</if>
+		<if test="assessmentDateEnd != null ">
+		    and ReqAssessmentDate &lt;= #{assessmentDateEnd,jdbcType=DATE}
+		</if>	
+		<if test="reqState != null and reqState != '' ">
+		    and ReqState = #{reqState,jdbcType=CHAR}
+		</if>
+	</trim>
+  </select>
+  
+  <select id="selectReqNumber" resultMap="ReqNumResultMap" >
+    select distinct ReqNum from requirements order by ReqNum  
+  </select>
+  
+  <select id="selectRequirements" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from requirements
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="reqNum != null and reqNum != '' ">
+			and ReqNum LIKE CONCAT(CONCAT('%', #{reqNum}),'%')
+		</if>
+		<if test="reqName != null and reqName != '' ">
+		    and ReqName LIKE CONCAT(CONCAT('%', #{reqName}),'%')
+		</if>
+		<if test="reqPerInCharge != null and reqPerInCharge != '' ">
+		    and ReqPerInCharge LIKE CONCAT(CONCAT('%', #{reqPerInCharge}),'%')
+		</if>
+		<if test="assessmentDateStart != null ">
+		    and ReqAssessmentDate &gt;= #{assessmentDateStart,jdbcType=DATE}
+		</if>
+		<if test="assessmentDateEnd != null ">
+		    and ReqAssessmentDate &lt;= #{assessmentDateEnd,jdbcType=DATE}
+		</if>
+		<if test="reqState != null and reqState != '' ">
+		    and ReqState = #{reqState,jdbcType=CHAR}
+		</if>
+	</trim>
+	Order By ReqAssessmentDate Desc
+	Limit #{startIndex}, #{pageSize}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from requirements
+    where ReqID = #{reqID,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="Requirements" >
+    insert into requirements (ReqID, ReqNum, ReqName, 
+      ReqState, ReqChildState, ReqScheduleDate, 
+      ReqPriority, ReqContent, ReqPerInCharge, 
+      ReqMember, ReqAssessment, ReqBusDepart, 
+      ReqComment, ReqCreTime, ReqModTime, 
+      ReqCreator, ReqModifier)
+    values (#{reqID,jdbcType=INTEGER}, #{reqNum,jdbcType=CHAR}, #{reqName,jdbcType=VARCHAR}, 
+      #{reqState,jdbcType=CHAR}, #{reqChildState,jdbcType=CHAR}, #{reqScheduleDate,jdbcType=DATE}, 
+      #{reqPriority,jdbcType=CHAR}, #{reqContent,jdbcType=VARCHAR}, #{reqPerInCharge,jdbcType=VARCHAR}, 
+      #{reqMember,jdbcType=VARCHAR}, #{reqAssessment,jdbcType=VARCHAR}, #{reqBusDepart,jdbcType=VARCHAR}, 
+      #{reqComment,jdbcType=VARCHAR}, #{reqCreTime,jdbcType=TIMESTAMP}, #{reqModTime,jdbcType=TIMESTAMP}, 
+      #{reqCreator,jdbcType=VARCHAR}, #{reqModifier,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="Requirements" >
+    insert into requirements
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="reqID != null" >
+        ReqID,
+      </if>
+      <if test="reqNum != null" >
+        ReqNum,
+      </if>
+      <if test="reqName != null" >
+        ReqName,
+      </if>
+      <if test="reqState != null" >
+        ReqState,
+      </if>
+      <if test="reqChildState != null" >
+        ReqChildState,
+      </if>
+      <if test="reqAssessmentDate != null" >
+        ReqAssessmentDate,
+      </if>
+      <if test="reqScheduleStartDate != null" >
+        ReqScheduleStartDate,
+      </if>
+      <if test="reqStartDate != null" >
+        ReqStartDate,
+      </if>
+      <if test="reqScheduleDate != null" >
+        ReqScheduleDate,
+      </if>
+      <if test="reqOrganizeType != null" >
+        ReqOrganizeType,
+      </if>
+      <if test="reqPriority != null" >
+        ReqPriority,
+      </if>
+      <if test="reqContent != null" >
+        ReqContent,
+      </if>
+      <if test="reqPerInCharge != null" >
+        ReqPerInCharge,
+      </if>
+      <if test="reqMember != null" >
+        ReqMember,
+      </if>
+      <if test="reqAssessment != null" >
+        ReqAssessment,
+      </if>
+      <if test="reqAuthor != null" >
+        ReqAuthor,
+      </if>
+      <if test="reqBusDepart != null" >
+        ReqBusDepart,
+      </if>
+      <if test="reqComment != null" >
+        ReqComment,
+      </if>
+      <if test="reqCreTime != null" >
+        ReqCreTime,
+      </if>
+      <if test="reqModTime != null" >
+        ReqModTime,
+      </if>
+      <if test="reqCreator != null" >
+        ReqCreator,
+      </if>
+      <if test="reqModifier != null" >
+        ReqModifier,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="reqID != null" >
+        #{reqID,jdbcType=INTEGER},
+      </if>
+      <if test="reqNum != null" >
+        #{reqNum,jdbcType=CHAR},
+      </if>
+      <if test="reqName != null" >
+        #{reqName,jdbcType=VARCHAR},
+      </if>
+      <if test="reqState != null" >
+        #{reqState,jdbcType=CHAR},
+      </if>
+      <if test="reqChildState != null" >
+        #{reqChildState,jdbcType=CHAR},
+      </if>
+      <if test="reqAssessmentDate != null" >
+        #{reqAssessmentDate,jdbcType=DATE},
+      </if>
+      <if test="reqScheduleStartDate != null" >
+        #{reqScheduleStartDate,jdbcType=DATE},
+      </if>
+      <if test="reqStartDate != null" >
+        #{reqStartDate,jdbcType=DATE},
+      </if>
+      <if test="reqScheduleDate != null" >
+        #{reqScheduleDate,jdbcType=DATE},
+      </if>
+      <if test="reqOrganizeType != null" >
+        #{reqOrganizeType,jdbcType=CHAR},
+      </if>
+      <if test="reqPriority != null" >
+        #{reqPriority,jdbcType=CHAR},
+      </if>
+      <if test="reqContent != null" >
+        #{reqContent,jdbcType=VARCHAR},
+      </if>
+      <if test="reqPerInCharge != null" >
+        #{reqPerInCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="reqMember != null" >
+        #{reqMember,jdbcType=VARCHAR},
+      </if>
+      <if test="reqAssessment != null" >
+        #{reqAssessment,jdbcType=VARCHAR},
+      </if>
+      <if test="reqAuthor != null" >
+        #{reqAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="reqBusDepart != null" >
+        #{reqBusDepart,jdbcType=VARCHAR},
+      </if>
+      <if test="reqComment != null" >
+        #{reqComment,jdbcType=VARCHAR},
+      </if>
+      <if test="reqCreTime != null" >
+        #{reqCreTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reqModTime != null" >
+        #{reqModTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reqCreator != null" >
+        #{reqCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="reqModifier != null" >
+        #{reqModifier,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="Requirements" >
+    update requirements
+    <set >
+      <if test="reqNum != null" >
+        ReqNum = #{reqNum,jdbcType=CHAR},
+      </if>
+      <if test="reqName != null" >
+        ReqName = #{reqName,jdbcType=VARCHAR},
+      </if>
+      <if test="reqState != null" >
+        ReqState = #{reqState,jdbcType=CHAR},
+      </if>
+      <if test="reqChildState != null" >
+        ReqChildState = #{reqChildState,jdbcType=CHAR},
+      </if>
+      <if test="reqAssessmentDate != null" >
+        ReqAssessmentDate = #{reqAssessmentDate,jdbcType=DATE},
+      </if>
+      <if test="reqScheduleStartDate != null" >
+        ReqScheduleStartDate = #{reqScheduleStartDate,jdbcType=DATE},
+      </if>
+      <if test="reqScheduleDate != null" >
+        ReqScheduleDate = #{reqScheduleDate,jdbcType=DATE},
+      </if>
+      <if test="reqStartDate != null" >
+        ReqStartDate = #{reqStartDate,jdbcType=DATE},
+      </if>
+      <if test="reqPriority != null" >
+        ReqPriority = #{reqPriority,jdbcType=CHAR},
+      </if>
+      <if test="reqContent != null" >
+        ReqContent = #{reqContent,jdbcType=VARCHAR},
+      </if>
+      <if test="reqPerInCharge != null" >
+        ReqPerInCharge = #{reqPerInCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="reqMember != null" >
+        ReqMember = #{reqMember,jdbcType=VARCHAR},
+      </if>
+      <if test="reqAssessment != null" >
+        ReqAssessment = #{reqAssessment,jdbcType=VARCHAR},
+      </if>
+      <if test="reqAuthor != null" >
+        ReqAuthor = #{reqAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="reqBusDepart != null" >
+        ReqBusDepart = #{reqBusDepart,jdbcType=VARCHAR},
+      </if>
+      <if test="reqComment != null" >
+        ReqComment = #{reqComment,jdbcType=VARCHAR},
+      </if>
+      <if test="reqCreTime != null" >
+        ReqCreTime = #{reqCreTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reqModTime != null" >
+        ReqModTime = #{reqModTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reqCreator != null" >
+        ReqCreator = #{reqCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="reqModifier != null" >
+        ReqModifier = #{reqModifier,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ReqID = #{reqID,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="Requirements" >
+    update requirements
+    set ReqNum = #{reqNum,jdbcType=CHAR},
+      ReqName = #{reqName,jdbcType=VARCHAR},
+      ReqState = #{reqState,jdbcType=CHAR},
+      ReqChildState = #{reqChildState,jdbcType=CHAR},
+      ReqScheduleDate = #{reqScheduleDate,jdbcType=DATE},
+      ReqPriority = #{reqPriority,jdbcType=CHAR},
+      ReqContent = #{reqContent,jdbcType=VARCHAR},
+      ReqPerInCharge = #{reqPerInCharge,jdbcType=VARCHAR},
+      ReqMember = #{reqMember,jdbcType=VARCHAR},
+      ReqAssessment = #{reqAssessment,jdbcType=VARCHAR},
+      ReqBusDepart = #{reqBusDepart,jdbcType=VARCHAR},
+      ReqComment = #{reqComment,jdbcType=VARCHAR},
+      ReqCreTime = #{reqCreTime,jdbcType=TIMESTAMP},
+      ReqModTime = #{reqModTime,jdbcType=TIMESTAMP},
+      ReqCreator = #{reqCreator,jdbcType=VARCHAR},
+      ReqModifier = #{reqModifier,jdbcType=VARCHAR}
+    where ReqID = #{reqID,jdbcType=INTEGER}
+  </update>
+</mapper>

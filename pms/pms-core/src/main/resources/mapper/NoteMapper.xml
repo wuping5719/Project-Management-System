@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmb.pms.core.dao.NoteDAO" >
+  <resultMap id="BaseResultMap" type="Note" >
+    <id column="NoteID" property="noteID" jdbcType="INTEGER" />
+    <result column="NoteTitle" property="noteTitle" jdbcType="VARCHAR" />
+    <result column="NoteContent" property="noteContent" jdbcType="VARCHAR" />
+    <result column="NoteAttachment" property="noteAttachment" jdbcType="VARCHAR" />
+    <result column="NoteKeyWord" property="noteKeyWord" jdbcType="VARCHAR" />
+    <result column="NotePublisherID" property="notePublisherID" jdbcType="INTEGER" />
+    <result column="NotePublishDate" property="notePublishDate" jdbcType="DATE" />
+    <result column="NoteModifyDate" property="noteModifyDate" jdbcType="DATE" />
+  </resultMap>
+  
+  <resultMap id="KeyWordsMap" type="java.lang.String" >    
+     <result column="NoteKeyWord" property="noteKeyWord" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    NoteID, NoteTitle, NoteContent, NoteAttachment, NoteKeyWord, NotePublisherID, NotePublishDate, 
+    NoteModifyDate
+  </sql>
+  
+  <select id="selectKeyWords" resultMap="KeyWordsMap">
+    select distinct NoteKeyWord from note
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from note
+    where NoteID = #{noteid,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectTotalNum" resultType="Integer" >
+    select count(*) from note
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="noteTitle != null and noteTitle != '' ">
+			and NoteTitle LIKE CONCAT(CONCAT('%', #{noteTitle}),'%')
+		</if>
+		<if test="noteKeyWord != null and noteKeyWord != '' ">
+		    and NoteKeyWord LIKE CONCAT(CONCAT('%', #{noteKeyWord}),'%')
+		</if>
+	</trim>
+  </select>
+  
+  <select id="selectNotes" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from note
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="noteTitle != null and noteTitle != '' ">
+			and NoteTitle LIKE CONCAT(CONCAT('%', #{noteTitle}),'%')
+		</if>
+		<if test="noteKeyWord != null and noteKeyWord != '' ">
+		    and NoteKeyWord LIKE CONCAT(CONCAT('%', #{noteKeyWord}),'%')
+		</if>
+	</trim>
+	Limit #{startIndex}, #{pageSize}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from note
+    where NoteID = #{noteID,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="Note" >
+    insert into note (NoteID, NoteTitle, NoteContent, 
+      NoteAttachment, NoteKeyWord, NotePublisherID, 
+      NotePublishDate, NoteModifyDate)
+    values (#{noteID,jdbcType=INTEGER}, #{noteTitle,jdbcType=VARCHAR}, #{noteContent,jdbcType=VARCHAR}, 
+      #{noteAttachment,jdbcType=VARCHAR}, #{noteKeyWord,jdbcType=VARCHAR}, #{notePublisherID,jdbcType=INTEGER}, 
+      #{notePublishDate,jdbcType=DATE}, #{noteModifyDate,jdbcType=DATE})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="com.cmb.pms.core.model.Note" >
+    insert into note
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="noteID != null" >
+        NoteID,
+      </if>
+      <if test="noteTitle != null" >
+        NoteTitle,
+      </if>
+      <if test="noteContent != null" >
+        NoteContent,
+      </if>
+      <if test="noteAttachment != null" >
+        NoteAttachment,
+      </if>
+      <if test="noteKeyWord != null" >
+        NoteKeyWord,
+      </if>
+      <if test="notePublisherID != null" >
+        NotePublisherID,
+      </if>
+      <if test="notePublishDate != null" >
+        NotePublishDate,
+      </if>
+      <if test="noteModifyDate != null" >
+        NoteModifyDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="noteID != null" >
+        #{noteID,jdbcType=INTEGER},
+      </if>
+      <if test="noteTitle != null" >
+        #{noteTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="noteContent != null" >
+        #{noteContent,jdbcType=VARCHAR},
+      </if>
+      <if test="noteAttachment != null" >
+        #{noteAttachment,jdbcType=VARCHAR},
+      </if>
+      <if test="noteKeyWord != null" >
+        #{noteKeyWord,jdbcType=VARCHAR},
+      </if>
+      <if test="notePublisherID != null" >
+        #{notePublisherID,jdbcType=INTEGER},
+      </if>
+      <if test="notePublishDate != null" >
+        #{notePublishDate,jdbcType=DATE},
+      </if>
+      <if test="noteModifyDate != null" >
+        #{noteModifyDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.cmb.pms.core.model.Note" >
+    update note
+    <set >
+      <if test="noteTitle != null" >
+        NoteTitle = #{noteTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="noteContent != null" >
+        NoteContent = #{noteContent,jdbcType=VARCHAR},
+      </if>
+      <if test="noteAttachment != null" >
+        NoteAttachment = #{noteAttachment,jdbcType=VARCHAR},
+      </if>
+      <if test="noteKeyWord != null" >
+        NoteKeyWord = #{noteKeyWord,jdbcType=VARCHAR},
+      </if>
+      <if test="notePublisherID != null" >
+        NotePublisherID = #{notePublisherID,jdbcType=INTEGER},
+      </if>
+      <if test="notePublishDate != null" >
+        NotePublishDate = #{notePublishDate,jdbcType=DATE},
+      </if>
+      <if test="noteModifyDate != null" >
+        NoteModifyDate = #{noteModifyDate,jdbcType=DATE},
+      </if>
+    </set>
+    where NoteID = #{noteID,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.cmb.pms.core.model.Note" >
+    update note
+    set NoteTitle = #{noteTitle,jdbcType=VARCHAR},
+      NoteContent = #{noteContent,jdbcType=VARCHAR},
+      NoteAttachment = #{noteAttachment,jdbcType=VARCHAR},
+      NoteKeyWord = #{noteKeyWord,jdbcType=VARCHAR},
+      NotePublisherID = #{notePublisherID,jdbcType=INTEGER},
+      NotePublishDate = #{notePublishDate,jdbcType=DATE},
+      NoteModifyDate = #{noteModifyDate,jdbcType=DATE}
+    where NoteID = #{noteID,jdbcType=INTEGER}
+  </update>
+</mapper>

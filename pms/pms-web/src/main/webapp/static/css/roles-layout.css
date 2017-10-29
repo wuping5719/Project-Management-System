@@ -1,0 +1,37 @@
+@charset "utf-8";
+
+#queryBar {
+	margin: 5px 0 1px 0;
+	width: 100%;
+	height: 40px;
+}
+
+#rolesListTable {
+	width: 100%;
+	height: 100%;
+	text-align:center;
+}
+
+#rolesTab {
+	margin: 2px 20px 10px 20px;
+	width: 96%;
+	table-layout:fixed;
+}
+#rolesTab tr {
+    height: 40px;
+    overflow: hidden;
+}
+#rolesTab td {
+    border: 1px solid #0000CD;
+    white-space: nowrap;
+    overflow: hidden;
+    word-break: keep-all;
+    text-overflow: ellipsis;
+} 
+
+#rolesPage {
+	width: 100%;
+	height: 30px;
+	text-align:center;
+}
+

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<!-- <dubbo:application name="PmsClientProvider" /> 使用multicast广播注册中心暴露服务地址 
+		<dubbo:registry address="multicast://224.5.6.7:1234" /> <dubbo:registry id="oucRegistry" 
+		address="zookeeper://127.0.0.1:2181"></dubbo:registry> 用dubbo协议在21000端口暴露服务 
+		<dubbo:protocol name="dubbo" port="21000" /> -->
+
+	<dubbo:application name="PmsClientProvider" />
+	<dubbo:registry id="cmbRegistry" address="#{app.dubboRegistry}" protocol="zookeeper" />
+	<dubbo:protocol name="dubbo" port="#{app.dubboPort}" threads="#{app.dubboThreads}" heartbeat="#{app.dubboHeartBeats}" />
+
+	<!-- 声明需要暴露的服务接口 -->
+	<dubbo:service interface="com.cmb.pms.client.service.UserServiceClient" ref="userServiceClient" registry="cmbRegistry" owner="cmb" protocol="dubbo" />
+	<bean id="userServiceClient" class="com.cmb.pms.client.service.impl.UserServiceClientImpl">
+		<property name="userServiceCore" ref="userServiceCore" />
+	</bean>
+
+    <dubbo:service interface="com.cmb.pms.client.service.PublicActivityServiceClient" ref="publicActivityServiceClient" registry="cmbRegistry" owner="cmb" protocol="dubbo" />
+	<bean id="publicActivityServiceClient" class="com.cmb.pms.client.service.impl.PublicActivityServiceClientImpl">
+		<property name="publicActivityServiceCore" ref="publicActivityServiceCore" />
+	</bean>
+	
+	<dubbo:service interface="com.cmb.pms.client.service.InterTrainingServiceClient" ref="interTrainingServiceClient" registry="cmbRegistry" owner="cmb" protocol="dubbo" />
+	<bean id="interTrainingServiceClient" class="com.cmb.pms.client.service.impl.InterTrainingServiceClientImpl">
+		<property name="interTrainingServiceCore" ref="interTrainingServiceCore" />
+	</bean>
+	
+	<dubbo:service interface="com.cmb.pms.client.service.RequirementsServiceClient" ref="requirementsServiceClient" registry="cmbRegistry" owner="cmb" protocol="dubbo" />
+	<bean id="requirementsServiceClient" class="com.cmb.pms.client.service.impl.RequirementsServiceClientImpl">
+		<property name="requirementsServiceCore" ref="requirementsServiceCore" />
+		<property name="projectServiceCore" ref="projectServiceCore" />
+	</bean>
+	
+	<dubbo:service interface="com.cmb.pms.client.service.ProgramConflictServiceClient" ref="programConflictServiceClient" registry="cmbRegistry" owner="cmb" protocol="dubbo" />
+	<bean id="programConflictServiceClient" class="com.cmb.pms.client.service.impl.ProgramConflictServiceClientImpl">
+		<property name="programConflictServiceCore" ref="programConflictServiceCore" />
+	</bean>
+	
+	<dubbo:service interface="com.cmb.pms.client.service.ProjectServiceClient" ref="projectServiceClient" registry="cmbRegistry" owner="cmb" protocol="dubbo" />
+	<bean id="projectServiceClient" class="com.cmb.pms.client.service.impl.ProjectServiceClientImpl">
+		<property name="projectServiceCore" ref="projectServiceCore" />
+	</bean>
+	
+	<dubbo:service interface="com.cmb.pms.client.service.EventTrackServiceClient" ref="eventTrackServiceClient" registry="cmbRegistry" owner="cmb" protocol="dubbo" />
+	<bean id="eventTrackServiceClient" class="com.cmb.pms.client.service.impl.EventTrackServiceClientImpl">
+		<property name="eventTrackServiceCore" ref="eventTrackServiceCore" />
+	</bean>
+	
+	<dubbo:service interface="com.cmb.pms.client.service.AuthorityServiceClient" ref="authorityServiceClient" registry="cmbRegistry" owner="cmb" protocol="dubbo" />
+	<bean id="authorityServiceClient" class="com.cmb.pms.client.service.impl.AuthorityServiceClientImpl">
+		<property name="roleServiceCore" ref="roleServiceCore" />
+		<property name="authorityServiceCore" ref="authorityServiceCore" />
+		<property name="roleAuthorityServiceCore" ref="roleAuthorityServiceCore" />
+		<property name="userRoleServiceCore" ref="userRoleServiceCore" />
+	</bean>
+	
+	<dubbo:service interface="com.cmb.pms.client.service.FileServiceClient" ref="fileServiceClient" registry="cmbRegistry" owner="cmb" protocol="dubbo" />
+	<bean id="fileServiceClient" class="com.cmb.pms.client.service.impl.FileServiceClientImpl">
+		<property name="fileServiceCore" ref="fileServiceCore" />
+	</bean>
+	
+	<dubbo:service interface="com.cmb.pms.client.service.NoteServiceClient" ref="noteServiceClient" registry="cmbRegistry" owner="cmb" protocol="dubbo" />
+	<bean id="noteServiceClient" class="com.cmb.pms.client.service.impl.NoteServiceClientImpl">
+		<property name="noteServiceCore" ref="noteServiceCore" />
+		<property name="userServiceCore" ref="userServiceCore" />
+	</bean>
+</beans>

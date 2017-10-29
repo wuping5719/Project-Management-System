@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmb.pms.core.dao.EventTrackDAO" >
+  <resultMap id="BaseResultMap" type="EventTrack" >
+    <id column="EveTraID" property="eveTraID" jdbcType="INTEGER" />
+    <result column="EveTraReqName" property="eveTraReqName" jdbcType="VARCHAR" />
+    <result column="EveTraState" property="eveTraState" jdbcType="VARCHAR" />
+    <result column="EveTraProgress" property="eveTraProgress" jdbcType="VARCHAR" />
+    <result column="EveTraContent" property="eveTraContent" jdbcType="VARCHAR" />
+    <result column="EveTraPerInCharge" property="eveTraPerInCharge" jdbcType="VARCHAR" />
+    <result column="EveTraCreTime" property="eveTraCreTime" jdbcType="TIMESTAMP" />
+    <result column="EveTraModTime" property="eveTraModTime" jdbcType="TIMESTAMP" />
+    <result column="EveTraCreator" property="eveTraCreator" jdbcType="VARCHAR" />
+    <result column="EveTraModifier" property="eveTraModifier" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    EveTraID, EveTraReqName, EveTraState, EveTraProgress, EveTraContent, EveTraPerInCharge, 
+    EveTraCreTime, EveTraModTime, EveTraCreator, EveTraModifier
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from eventtrack
+    where EveTraID = #{eveTraID,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectTotalNum" resultType="Integer" >
+    select count(*) from eventtrack
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="eveTraReqName != null and eveTraReqName != '' ">
+			and EveTraReqName LIKE CONCAT(CONCAT('%', #{eveTraReqName}),'%')
+		</if>
+		<if test="eveTraState != null and eveTraState != '' ">
+		    and EveTraState = #{eveTraState,jdbcType=VARCHAR}
+		</if>
+		<if test="eveTraPerInCharge != null and eveTraPerInCharge != '' ">
+		    and EveTraPerInCharge = #{eveTraPerInCharge,jdbcType=VARCHAR}
+		</if>
+		and EveTraState != '已解决'		
+	</trim>
+  </select>
+  
+  <select id="selectFinishTotalNum" resultType="Integer" >
+    select count(*) from eventtrack
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="eveTraReqName != null and eveTraReqName != '' ">
+			and EveTraReqName LIKE CONCAT(CONCAT('%', #{eveTraReqName}),'%')
+		</if>
+		<if test="eveTraState != null and eveTraState != '' ">
+		    and EveTraState = #{eveTraState,jdbcType=VARCHAR}
+		</if>
+		<if test="eveTraPerInCharge != null and eveTraPerInCharge != '' ">
+		    and EveTraPerInCharge = #{eveTraPerInCharge,jdbcType=VARCHAR}
+		</if> 
+		and  EveTraState = '已解决'		
+	</trim>
+  </select>
+
+  <select id="selectEventTrack" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from eventtrack
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="eveTraReqName != null and eveTraReqName != '' ">
+			and EveTraReqName LIKE CONCAT(CONCAT('%', #{eveTraReqName}),'%')
+		</if>
+		<if test="eveTraState != null and eveTraState != '' ">
+		    and EveTraState = #{eveTraState,jdbcType=VARCHAR}
+		</if>
+		<if test="eveTraPerInCharge != null and eveTraPerInCharge != '' ">
+		    and EveTraPerInCharge = #{eveTraPerInCharge,jdbcType=VARCHAR}
+		</if>
+		and EveTraState != '已解决'	
+	</trim>
+	Limit #{startIndex}, #{pageSize}
+  </select> 
+  
+  <select id="selectFinishEventTrack" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from eventtrack
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="eveTraReqName != null and eveTraReqName != '' ">
+			and EveTraReqName LIKE CONCAT(CONCAT('%', #{eveTraReqName}),'%')
+		</if>
+		<if test="eveTraState != null and eveTraState != '' ">
+		    and EveTraState = #{eveTraState,jdbcType=VARCHAR}
+		</if>
+		<if test="eveTraPerInCharge != null and eveTraPerInCharge != '' ">
+		    and EveTraPerInCharge = #{eveTraPerInCharge,jdbcType=VARCHAR}
+		</if>
+		and EveTraState = '已解决'	
+	</trim>
+	Limit #{startIndex}, #{pageSize}
+  </select>
+    
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from eventtrack
+    where EveTraID = #{eveTraID,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="EventTrack" >
+    insert into eventtrack (EveTraID, EveTraReqName, EveTraState, 
+      EveTraProgress, EveTraContent, EveTraPerInCharge, 
+      EveTraCreTime, EveTraModTime, EveTraCreator, 
+      EveTraModifier)
+    values (#{eveTraID,jdbcType=INTEGER}, #{eveTraReqName,jdbcType=VARCHAR}, #{eveTraState,jdbcType=VARCHAR}, 
+      #{eveTraProgress,jdbcType=VARCHAR}, #{eveTraContent,jdbcType=VARCHAR}, #{eveTraPerInCharge,jdbcType=VARCHAR}, 
+      #{eveTraCreTime,jdbcType=TIMESTAMP}, #{eveTraModTime,jdbcType=TIMESTAMP}, #{eveTraCreator,jdbcType=VARCHAR}, 
+      #{eveTraModifier,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="EventTrack" >
+    insert into eventtrack
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="eveTraID != null" >
+        EveTraID,
+      </if>
+      <if test="eveTraReqName != null" >
+        EveTraReqName,
+      </if>
+      <if test="eveTraState != null" >
+        EveTraState,
+      </if>
+      <if test="eveTraProgress != null" >
+        EveTraProgress,
+      </if>
+      <if test="eveTraContent != null" >
+        EveTraContent,
+      </if>
+      <if test="eveTraPerInCharge != null" >
+        EveTraPerInCharge,
+      </if>
+      <if test="eveTraCreTime != null" >
+        EveTraCreTime,
+      </if>
+      <if test="eveTraModTime != null" >
+        EveTraModTime,
+      </if>
+      <if test="eveTraCreator != null" >
+        EveTraCreator,
+      </if>
+      <if test="eveTraModifier != null" >
+        EveTraModifier,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="eveTraID != null" >
+        #{eveTraID,jdbcType=INTEGER},
+      </if>
+      <if test="eveTraReqName != null" >
+        #{eveTraReqName,jdbcType=VARCHAR},
+      </if>
+      <if test="eveTraState != null" >
+        #{eveTraState,jdbcType=VARCHAR},
+      </if>
+      <if test="eveTraProgress != null" >
+        #{eveTraProgress,jdbcType=VARCHAR},
+      </if>
+      <if test="eveTraContent != null" >
+        #{eveTraContent,jdbcType=VARCHAR},
+      </if>
+      <if test="eveTraPerInCharge != null" >
+        #{eveTraPerInCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="eveTraCreTime != null" >
+        #{eveTraCreTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eveTraModTime != null" >
+        #{eveTraModTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eveTraCreator != null" >
+        #{eveTraCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="eveTraModifier != null" >
+        #{eveTraModifier,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="EventTrack" >
+    update eventtrack
+    <set >
+      <if test="eveTraReqName != null" >
+        EveTraReqName = #{eveTraReqName,jdbcType=VARCHAR},
+      </if>
+      <if test="eveTraState != null" >
+        EveTraState = #{eveTraState,jdbcType=VARCHAR},
+      </if>
+      <if test="eveTraProgress != null" >
+        EveTraProgress = #{eveTraProgress,jdbcType=VARCHAR},
+      </if>
+      <if test="eveTraContent != null" >
+        EveTraContent = #{eveTraContent,jdbcType=VARCHAR},
+      </if>
+      <if test="eveTraPerInCharge != null" >
+        EveTraPerInCharge = #{eveTraPerInCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="eveTraCreTime != null" >
+        EveTraCreTime = #{eveTraCreTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eveTraModTime != null" >
+        EveTraModTime = #{eveTraModTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eveTraCreator != null" >
+        EveTraCreator = #{eveTraCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="eveTraModifier != null" >
+        EveTraModifier = #{eveTraModifier,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where EveTraID = #{eveTraID,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="EventTrack" >
+    update eventtrack
+    set EveTraReqName = #{eveTraReqName,jdbcType=VARCHAR},
+      EveTraState = #{eveTraState,jdbcType=VARCHAR},
+      EveTraProgress = #{eveTraProgress,jdbcType=VARCHAR},
+      EveTraContent = #{eveTraContent,jdbcType=VARCHAR},
+      EveTraPerInCharge = #{eveTraPerInCharge,jdbcType=VARCHAR},
+      EveTraCreTime = #{eveTraCreTime,jdbcType=TIMESTAMP},
+      EveTraModTime = #{eveTraModTime,jdbcType=TIMESTAMP},
+      EveTraCreator = #{eveTraCreator,jdbcType=VARCHAR},
+      EveTraModifier = #{eveTraModifier,jdbcType=VARCHAR}
+    where EveTraID = #{eveTraID,jdbcType=INTEGER}
+  </update>
+</mapper>

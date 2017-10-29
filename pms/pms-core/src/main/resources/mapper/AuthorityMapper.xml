@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmb.pms.core.dao.AuthorityDAO" >
+  <resultMap id="BaseResultMap" type="Authority" >
+    <id column="AuthorityID" property="authorityID" jdbcType="INTEGER" />
+    <result column="ParentAuthID" property="parentAuthID" jdbcType="INTEGER" />
+    <result column="AuthName" property="authName" jdbcType="VARCHAR" />
+    <result column="AuthDescription" property="authDescription" jdbcType="VARCHAR" />
+    <result column="AuthURL" property="authURL" jdbcType="VARCHAR" />
+    <result column="AuthCreTime" property="authCreTime" jdbcType="TIMESTAMP" />
+    <result column="AuthModTime" property="authModTime" jdbcType="TIMESTAMP" />
+    <result column="AuthCreator" property="authCreator" jdbcType="VARCHAR" />
+    <result column="AuthModifier" property="authModifier" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    AuthorityID, ParentAuthID, AuthName, AuthDescription, AuthURL, 
+    AuthCreTime, AuthModTime, AuthCreator, AuthModifier
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from authority
+    where AuthorityID = #{authorityID,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectTotalNum" resultType="Integer" >
+    select count(*) from authority
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="authName != null and authName != '' ">
+			and AuthName LIKE CONCAT(CONCAT('%', #{authName}),'%')
+		</if>
+	</trim>
+  </select>
+  
+  <select id="selectAuthorities" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from authority
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="authName != null and authName != '' ">
+			and AuthName LIKE CONCAT(CONCAT('%', #{authName}),'%')
+		</if>
+	</trim>
+	Limit #{startIndex}, #{pageSize}
+  </select>
+  
+  <select id="selectAllAuthorities" resultMap="BaseResultMap" >
+    select <include refid="Base_Column_List" /> from authority
+  </select>
+  
+  <select id="selectAuthoritiesByAuthIDList" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from authority
+    where AuthorityID In 
+      <foreach item="item" index="index" collection="list" open="(" separator="," close=")"> 
+          #{item} 
+      </foreach>  
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from authority
+    where AuthorityID = #{authorityID,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="Authority" >
+    insert into authority (AuthorityID, ParentAuthID, AuthName, 
+      AuthDescription, AuthURL, AuthCreTime, AuthModTime, 
+      AuthCreator, AuthModifier)
+    values (#{authorityID,jdbcType=INTEGER}, #{parentAuthID,jdbcType=INTEGER}, #{authName,jdbcType=VARCHAR}, 
+      #{authDescription,jdbcType=VARCHAR},  #{authURL,jdbcType=VARCHAR}, 
+      #{authCreTime,jdbcType=TIMESTAMP}, #{authModTime,jdbcType=TIMESTAMP}, 
+      #{authCreator,jdbcType=VARCHAR}, #{authModifier,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="Authority" >
+    insert into authority
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="authorityID != null" >
+        AuthorityID,
+      </if>
+      <if test="parentAuthID != null" >
+        ParentAuthID,
+      </if>
+      <if test="authName != null" >
+        AuthName,
+      </if>
+      <if test="authDescription != null" >
+        AuthDescription,
+      </if>
+      <if test="authURL != null" >
+        AuthURL,
+      </if>
+      <if test="authCreTime != null" >
+        AuthCreTime,
+      </if>
+      <if test="authModTime != null" >
+        AuthModTime,
+      </if>
+      <if test="authCreator != null" >
+        AuthCreator,
+      </if>
+      <if test="authModifier != null" >
+        AuthModifier,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="authorityID != null" >
+        #{authorityID,jdbcType=INTEGER},
+      </if>
+      <if test="parentAuthID != null" >
+        #{parentAuthID,jdbcType=INTEGER},
+      </if>
+      <if test="authName != null" >
+        #{authName,jdbcType=VARCHAR},
+      </if>
+      <if test="authDescription != null" >
+        #{authDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="authURL != null" >
+        #{authURL,jdbcType=VARCHAR},
+      </if>
+      <if test="authCreTime != null" >
+        #{authCreTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="authModTime != null" >
+        #{authModTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="authCreator != null" >
+        #{authCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="authModifier != null" >
+        #{authModifier,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="Authority" >
+    update authority
+    <set >
+      <if test="parentAuthID != null" >
+        ParentAuthID = #{parentAuthID,jdbcType=INTEGER},
+      </if>
+      <if test="authName != null" >
+        AuthName = #{authName,jdbcType=VARCHAR},
+      </if>
+      <if test="authDescription != null" >
+        AuthDescription = #{authDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="authURL != null" >
+        AuthURL = #{authURL,jdbcType=VARCHAR},
+      </if>
+      <if test="authCreTime != null" >
+        AuthCreTime = #{authCreTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="authModTime != null" >
+        AuthModTime = #{authModTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="authCreator != null" >
+        AuthCreator = #{authCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="authModifier != null" >
+        AuthModifier = #{authModifier,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where AuthorityID = #{authorityID,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="Authority" >
+    update authority
+    set ParentAuthID = #{parentAuthID,jdbcType=INTEGER},
+      AuthName = #{authName,jdbcType=VARCHAR},
+      AuthDescription = #{authDescription,jdbcType=VARCHAR},
+      AuthURL = #{authURL,jdbcType=VARCHAR},
+      AuthCreTime = #{authCreTime,jdbcType=TIMESTAMP},
+      AuthModTime = #{authModTime,jdbcType=TIMESTAMP},
+      AuthCreator = #{authCreator,jdbcType=VARCHAR},
+      AuthModifier = #{authModifier,jdbcType=VARCHAR}
+    where AuthorityID = #{authorityID,jdbcType=INTEGER}
+  </update>
+</mapper>

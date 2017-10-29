@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>   
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="lazyLoadingEnabled" value="true" />
+		<setting name="cacheEnabled" value="true" />
+		<setting name="jdbcTypeForNull" value="NULL" />
+	</settings>
+
+	<typeAliases>
+		<typeAlias alias="User" type="com.cmb.pms.core.model.User" />
+		<typeAlias alias="Role" type="com.cmb.pms.core.model.Role" />
+		<typeAlias alias="Project" type="com.cmb.pms.core.model.Project" />
+		<typeAlias alias="Authority" type="com.cmb.pms.core.model.Authority" />
+		<typeAlias alias="ProgramConflict" type="com.cmb.pms.core.model.ProgramConflict" />
+		<typeAlias alias="PublicActivity" type="com.cmb.pms.core.model.PublicActivity" />
+		<typeAlias alias="Requirements" type="com.cmb.pms.core.model.Requirements" />
+		<typeAlias alias="RoleAuthority" type="com.cmb.pms.core.model.RoleAuthority" />
+		<typeAlias alias="UserRole" type="com.cmb.pms.core.model.UserRole" />
+		<typeAlias alias="EventTrack" type="com.cmb.pms.core.model.EventTrack" />
+		<typeAlias alias="InterTraining" type="com.cmb.pms.core.model.InterTraining" />
+		<typeAlias alias="FileInfo" type="com.cmb.pms.core.model.FileInfo" />
+		<typeAlias alias="Note" type="com.cmb.pms.core.model.Note" />
+	</typeAliases>
+</configuration>   

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmb.pms.core.dao.ProgramConflictDAO" >
+  <resultMap id="BaseResultMap" type="ProgramConflict" >
+    <id column="ConID" property="conID" jdbcType="INTEGER" />
+    <result column="ConProID" property="conProID" jdbcType="VARCHAR" />
+    <result column="ConProName" property="conProName" jdbcType="VARCHAR" />
+    <result column="ConProjName" property="conProjName" jdbcType="VARCHAR" />
+    <result column="ConPerInCharge" property="conPerInCharge" jdbcType="VARCHAR" />
+    <result column="ConSTStaTime" property="conSTStaTime" jdbcType="DATE" />
+    <result column="ConUATStaTime" property="conUATStaTime" jdbcType="DATE" />
+    <result column="ConExOnlineDate" property="conExOnlineDate" jdbcType="DATE" />
+    <result column="ConSolution" property="conSolution" jdbcType="VARCHAR" />
+    <result column="ConCreTime" property="conCreTime" jdbcType="TIMESTAMP" />
+    <result column="ConModTime" property="conModTime" jdbcType="TIMESTAMP" />
+    <result column="ConCreator" property="conCreator" jdbcType="VARCHAR" />
+    <result column="ConModifier" property="conModifier" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    ConID, ConProID, ConProName, ConProjName, ConPerInCharge, ConSTStaTime, ConUATStaTime, 
+    ConExOnlineDate, ConSolution, ConCreTime, ConModTime, ConCreator, ConModifier
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from programconflict
+    where ConID = #{conID,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByProjNumber" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from programconflict
+    where ConProID = #{projNumber,jdbcType=VARCHAR}
+  </select>
+   
+  <select id="selectTotalNum" resultType="Integer" >
+    select count(*) from programconflict
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="conProName != null and conProName != '' ">
+			and ConProName LIKE CONCAT(CONCAT('%', #{conProName}),'%')
+		</if>
+		<if test="conProID != null and conProID != '' ">
+		    and ConProID LIKE CONCAT(CONCAT('%', #{conProID}),'%')
+		</if>
+		<if test="conProjName != null and conProjName != '' ">
+		    and ConProjName LIKE CONCAT(CONCAT('%', #{conProjName}),'%')
+		</if>
+		<if test="conPerInCharge != null and conPerInCharge != '' ">
+		    and ConPerInCharge LIKE CONCAT(CONCAT('%', #{conPerInCharge}),'%')
+		</if>
+	</trim>
+  </select>
+  
+  <select id="selectProgramConflict" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from programconflict
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="conProName != null and conProName != '' ">
+			and ConProName LIKE CONCAT(CONCAT('%', #{conProName}),'%')
+		</if>
+		<if test="conProID != null and conProID != '' ">
+			and ConProID LIKE CONCAT(CONCAT('%', #{conProID}),'%')
+		</if>
+		<if test="conProjName != null and conProjName != '' ">
+		    and ConProjName LIKE CONCAT(CONCAT('%', #{conProjName}),'%')
+		</if>
+		<if test="conPerInCharge != null and conPerInCharge != '' ">
+		    and ConPerInCharge LIKE CONCAT(CONCAT('%', #{conPerInCharge}),'%')
+		</if>
+	</trim>
+	order by ConModTime DESC Limit #{startIndex}, #{pageSize}
+  </select>  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from programconflict
+    where ConID = #{conID,jdbcType=INTEGER}
+  </delete>
+  
+  <delete id="deleteByProjNumber" parameterType="java.lang.String" >
+    delete from programconflict
+    where ConProID = #{projNumber,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="ProgramConflict" >
+    insert into programconflict (ConID, ConProID, ConProName, 
+      ConProjName, ConPerInCharge, ConSTStaTime, 
+      ConUATStaTime, ConExOnlineDate, ConSolution, 
+      ConCreTime, ConModTime, ConCreator, 
+      ConModifier)
+    values (#{conID,jdbcType=INTEGER}, #{conProID,jdbcType=VARCHAR}, #{conProName,jdbcType=VARCHAR}, 
+      #{conProjName,jdbcType=VARCHAR}, #{conPerInCharge,jdbcType=VARCHAR}, #{conSTStaTime,jdbcType=DATE}, 
+      #{conUATStaTime,jdbcType=DATE}, #{conExOnlineDate,jdbcType=DATE}, #{conSolution,jdbcType=VARCHAR}, 
+      #{conCreTime,jdbcType=TIMESTAMP}, #{conModTime,jdbcType=TIMESTAMP}, #{conCreator,jdbcType=VARCHAR}, 
+      #{conModifier,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="ProgramConflict" >
+    insert into programconflict
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="conID != null" >
+        ConID,
+      </if>
+      <if test="conProID != null" >
+        ConProID,
+      </if>
+      <if test="conProName != null" >
+        ConProName,
+      </if>
+      <if test="conProjName != null" >
+        ConProjName,
+      </if>
+      <if test="conPerInCharge != null" >
+        ConPerInCharge,
+      </if>
+      <if test="conSTStaTime != null" >
+        ConSTStaTime,
+      </if>
+      <if test="conUATStaTime != null" >
+        ConUATStaTime,
+      </if>
+      <if test="conExOnlineDate != null" >
+        ConExOnlineDate,
+      </if>
+      <if test="conSolution != null" >
+        ConSolution,
+      </if>
+      <if test="conCreTime != null" >
+        ConCreTime,
+      </if>
+      <if test="conModTime != null" >
+        ConModTime,
+      </if>
+      <if test="conCreator != null" >
+        ConCreator,
+      </if>
+      <if test="conModifier != null" >
+        ConModifier,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="conID != null" >
+        #{conID,jdbcType=INTEGER},
+      </if>
+      <if test="conProID != null" >
+        #{conProID,jdbcType=VARCHAR},
+      </if>
+      <if test="conProName != null" >
+        #{conProName,jdbcType=VARCHAR},
+      </if>
+      <if test="conProjName != null" >
+        #{conProjName,jdbcType=VARCHAR},
+      </if>
+      <if test="conPerInCharge != null" >
+        #{conPerInCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="conSTStaTime != null" >
+        #{conSTStaTime,jdbcType=DATE},
+      </if>
+      <if test="conUATStaTime != null" >
+        #{conUATStaTime,jdbcType=DATE},
+      </if>
+      <if test="conExOnlineDate != null" >
+        #{conExOnlineDate,jdbcType=DATE},
+      </if>
+      <if test="conSolution != null" >
+        #{conSolution,jdbcType=VARCHAR},
+      </if>
+      <if test="conCreTime != null" >
+        #{conCreTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="conModTime != null" >
+        #{conModTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="conCreator != null" >
+        #{conCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="conModifier != null" >
+        #{conModifier,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="ProgramConflict" >
+    update programconflict
+    <set >
+      <if test="conProID != null" >
+        ConProID = #{conProID,jdbcType=VARCHAR},
+      </if>
+      <if test="conProName != null" >
+        ConProName = #{conProName,jdbcType=VARCHAR},
+      </if>
+      <if test="conProjName != null" >
+        ConProjName = #{conProjName,jdbcType=VARCHAR},
+      </if>
+      <if test="conPerInCharge != null" >
+        ConPerInCharge = #{conPerInCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="conSTStaTime != null" >
+        ConSTStaTime = #{conSTStaTime,jdbcType=DATE},
+      </if>
+      <if test="conUATStaTime != null" >
+        ConUATStaTime = #{conUATStaTime,jdbcType=DATE},
+      </if>
+      <if test="conExOnlineDate != null" >
+        ConExOnlineDate = #{conExOnlineDate,jdbcType=DATE},
+      </if>
+      <if test="conSolution != null" >
+        ConSolution = #{conSolution,jdbcType=VARCHAR},
+      </if>
+      <if test="conCreTime != null" >
+        ConCreTime = #{conCreTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="conModTime != null" >
+        ConModTime = #{conModTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="conCreator != null" >
+        ConCreator = #{conCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="conModifier != null" >
+        ConModifier = #{conModifier,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ConID = #{conID,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByProName" parameterType="ProgramConflict" >
+    update programconflict
+    <set >     
+      <if test="conSolution != null" >
+        ConSolution = #{conSolution,jdbcType=VARCHAR},
+      </if>
+      <if test="conModTime != null" >
+        ConModTime = #{conModTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="conModifier != null" >
+        ConModifier = #{conModifier,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ConProName = #{conProName,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="ProgramConflict" >
+    update programconflict
+    set ConProID = #{conProID,jdbcType=VARCHAR},
+      ConProName = #{conProName,jdbcType=VARCHAR},
+      ConProjName = #{conProjName,jdbcType=VARCHAR},
+      ConPerInCharge = #{conPerInCharge,jdbcType=VARCHAR},
+      ConSTStaTime = #{conSTStaTime,jdbcType=DATE},
+      ConUATStaTime = #{conUATStaTime,jdbcType=DATE},
+      ConExOnlineDate = #{conExOnlineDate,jdbcType=DATE},
+      ConSolution = #{conSolution,jdbcType=VARCHAR},
+      ConCreTime = #{conCreTime,jdbcType=TIMESTAMP},
+      ConModTime = #{conModTime,jdbcType=TIMESTAMP},
+      ConCreator = #{conCreator,jdbcType=VARCHAR},
+      ConModifier = #{conModifier,jdbcType=VARCHAR}
+    where ConID = #{conID,jdbcType=INTEGER}
+  </update>
+</mapper>

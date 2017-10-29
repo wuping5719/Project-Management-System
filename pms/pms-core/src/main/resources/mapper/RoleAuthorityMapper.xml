@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmb.pms.core.dao.RoleAuthorityDAO" >
+  <resultMap id="BaseResultMap" type="RoleAuthority" >
+    <id column="RoleAuthID" property="roleAuthID" jdbcType="INTEGER" />
+    <result column="RoleID" property="roleID" jdbcType="INTEGER" />
+    <result column="AuthorityID" property="authorityID" jdbcType="INTEGER" />
+    <result column="CreateTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="ModifyTime" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="Creator" property="creator" jdbcType="VARCHAR" />
+    <result column="Modifier" property="modifier" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    RoleAuthID, RoleID, AuthorityID, CreateTime, ModifyTime, Creator, Modifier
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from roleauthority
+    where RoleAuthID = #{roleAuthID,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectRoleAuthorities" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from roleauthority
+    where RoleID = #{roleID,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectRoleAuthsByRoleIDList" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from roleauthority
+    where RoleID In 
+         <foreach item="item" index="index" collection="list" open="(" separator="," close=")"> 
+            #{item} 
+         </foreach>  
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from roleauthority
+    where RoleAuthID = #{roleAuthID,jdbcType=INTEGER}
+  </delete>
+  
+  <delete id="deleteRoleAuthByRoleID" parameterType="java.lang.Integer" >
+    delete from roleauthority
+    where RoleID = #{roleID,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="RoleAuthority" >
+    insert into roleauthority (RoleAuthID, RoleID, AuthorityID, 
+      CreateTime, ModifyTime, Creator, 
+      Modifier)
+    values (#{roleAuthID,jdbcType=INTEGER}, #{roleID,jdbcType=INTEGER}, #{authorityID,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, 
+      #{modifier,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="RoleAuthority" >
+    insert into roleauthority
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleAuthID != null" >
+        RoleAuthID,
+      </if>
+      <if test="roleID != null" >
+        RoleID,
+      </if>
+      <if test="authorityID != null" >
+        AuthorityID,
+      </if>
+      <if test="createTime != null" >
+        CreateTime,
+      </if>
+      <if test="modifyTime != null" >
+        ModifyTime,
+      </if>
+      <if test="creator != null" >
+        Creator,
+      </if>
+      <if test="modifier != null" >
+        Modifier,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleAuthID != null" >
+        #{roleAuthID,jdbcType=INTEGER},
+      </if>
+      <if test="roleID != null" >
+        #{roleID,jdbcType=INTEGER},
+      </if>
+      <if test="authorityID != null" >
+        #{authorityID,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null" >
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="RoleAuthority" >
+    update roleauthority
+    <set >
+      <if test="roleID != null" >
+        RoleID = #{roleID,jdbcType=INTEGER},
+      </if>
+      <if test="authorityID != null" >
+        AuthorityID = #{authorityID,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        ModifyTime = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        Creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null" >
+        Modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where RoleAuthID = #{roleAuthID,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="RoleAuthority" >
+    update roleauthority
+    set RoleID = #{roleID,jdbcType=INTEGER},
+      AuthorityID = #{authorityID,jdbcType=INTEGER},
+      CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      ModifyTime = #{modifyTime,jdbcType=TIMESTAMP},
+      Creator = #{creator,jdbcType=VARCHAR},
+      Modifier = #{modifier,jdbcType=VARCHAR}
+    where RoleAuthID = #{roleAuthID,jdbcType=INTEGER}
+  </update>
+</mapper>

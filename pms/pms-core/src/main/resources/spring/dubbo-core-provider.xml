@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:lang="http://www.springframework.org/schema/lang" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/beans 
+     http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+     http://www.springframework.org/schema/tx
+     http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+     http://www.springframework.org/schema/aop 
+     http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+     http://www.springframework.org/schema/jee 
+     http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+     http://www.springframework.org/schema/context
+     http://www.springframework.org/schema/context/spring-context-3.1.xsd
+     http://www.springframework.org/schema/lang
+     http://www.springframework.org/schema/lang/spring-lang-3.1.xsd
+     http://www.springframework.org/schema/util
+     http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+
+	<bean id="userDAO" class="org.mybatis.spring.mapper.MapperFactoryBean" parent="baseDAO">
+		<property name="mapperInterface" value="com.cmb.pms.core.dao.UserDAO" />
+	</bean>
+
+   <bean id="publicActivityDAO" class="org.mybatis.spring.mapper.MapperFactoryBean" parent="baseDAO">
+		<property name="mapperInterface" value="com.cmb.pms.core.dao.PublicActivityDAO" />
+	</bean>
+	
+	<bean id="interTrainingDAO" class="org.mybatis.spring.mapper.MapperFactoryBean" parent="baseDAO">
+		<property name="mapperInterface" value="com.cmb.pms.core.dao.InterTrainingDAO" />
+	</bean>
+	
+	<bean id="programConflictDAO" class="org.mybatis.spring.mapper.MapperFactoryBean" parent="baseDAO">
+		<property name="mapperInterface" value="com.cmb.pms.core.dao.ProgramConflictDAO" />
+	</bean>
+	
+	<bean id="projectDAO" class="org.mybatis.spring.mapper.MapperFactoryBean" parent="baseDAO">
+		<property name="mapperInterface" value="com.cmb.pms.core.dao.ProjectDAO" />
+	</bean>
+	
+	<bean id="requirementsDAO" class="org.mybatis.spring.mapper.MapperFactoryBean" parent="baseDAO">
+		<property name="mapperInterface" value="com.cmb.pms.core.dao.RequirementsDAO" />
+	</bean>
+	
+	<bean id="eventTrackDAO" class="org.mybatis.spring.mapper.MapperFactoryBean" parent="baseDAO">
+		<property name="mapperInterface" value="com.cmb.pms.core.dao.EventTrackDAO" />
+	</bean>
+	
+	<bean id="roleDAO" class="org.mybatis.spring.mapper.MapperFactoryBean" parent="baseDAO">
+		<property name="mapperInterface" value="com.cmb.pms.core.dao.RoleDAO" />
+	</bean>
+	
+	<bean id="authorityDAO" class="org.mybatis.spring.mapper.MapperFactoryBean" parent="baseDAO">
+		<property name="mapperInterface" value="com.cmb.pms.core.dao.AuthorityDAO" />
+	</bean>
+	
+	<bean id="roleAuthorityDAO" class="org.mybatis.spring.mapper.MapperFactoryBean" parent="baseDAO">
+		<property name="mapperInterface" value="com.cmb.pms.core.dao.RoleAuthorityDAO" />
+	</bean>
+	
+	<bean id="userRoleDAO" class="org.mybatis.spring.mapper.MapperFactoryBean" parent="baseDAO">
+		<property name="mapperInterface" value="com.cmb.pms.core.dao.UserRoleDAO" />
+	</bean>
+	
+	<bean id="fileInfoDAO" class="org.mybatis.spring.mapper.MapperFactoryBean" parent="baseDAO">
+		<property name="mapperInterface" value="com.cmb.pms.core.dao.FileInfoDAO" />
+	</bean>
+	
+	<bean id="noteDAO" class="org.mybatis.spring.mapper.MapperFactoryBean" parent="baseDAO">
+		<property name="mapperInterface" value="com.cmb.pms.core.dao.NoteDAO" />
+	</bean>
+	
+	<!--     =============华丽的分割线=====================      -->
+	
+	<bean id="userServiceCore" class="com.cmb.pms.core.service.impl.UserServiceCoreImpl">
+		<property name="userDAO" ref="userDAO" />
+	</bean>
+
+	<bean id="publicActivityServiceCore" class="com.cmb.pms.core.service.impl.PublicActivityServiceCoreImpl">
+		<property name="publicActivityDAO" ref="publicActivityDAO" />
+	</bean>
+	
+	<bean id="interTrainingServiceCore" class="com.cmb.pms.core.service.impl.InterTrainingServiceCoreImpl">
+		<property name="interTrainingDAO" ref="interTrainingDAO" />
+	</bean>
+	
+	<bean id="requirementsServiceCore" class="com.cmb.pms.core.service.impl.RequirementsServiceCoreImpl">
+		<property name="requirementsDAO" ref="requirementsDAO" />
+	</bean>
+	
+	<bean id="programConflictServiceCore" class="com.cmb.pms.core.service.impl.ProgramConflictServiceCoreImpl">
+		<property name="programConflictDAO" ref="programConflictDAO" />
+		<property name="projectDAO" ref="projectDAO" />
+	</bean>
+	
+	<bean id="projectServiceCore" class="com.cmb.pms.core.service.impl.ProjectServiceCoreImpl">
+		<property name="projectDAO" ref="projectDAO" />
+		<property name="requirementsDAO" ref="requirementsDAO" />
+		<property name="programConflictDAO" ref="programConflictDAO" />
+	</bean>
+	
+	<bean id="eventTrackServiceCore" class="com.cmb.pms.core.service.impl.EventTrackServiceCoreImpl">
+		<property name="eventTrackDAO" ref="eventTrackDAO" />		
+	</bean>
+	
+	<bean id="roleServiceCore" class="com.cmb.pms.core.service.impl.RoleServiceCoreImpl">
+		<property name="roleDAO" ref="roleDAO" />
+	</bean>
+	
+	<bean id="authorityServiceCore" class="com.cmb.pms.core.service.impl.AuthorityServiceCoreImpl">
+		<property name="authorityDAO" ref="authorityDAO" />
+	</bean>
+	
+	<bean id="roleAuthorityServiceCore" class="com.cmb.pms.core.service.impl.RoleAuthorityServiceCoreImpl">
+		<property name="roleAuthorityDAO" ref="roleAuthorityDAO" />
+	</bean>
+	
+	<bean id="userRoleServiceCore" class="com.cmb.pms.core.service.impl.UserRoleServiceCoreImpl">
+		<property name="userRoleDAO" ref="userRoleDAO" />
+	</bean>
+	
+	<bean id="fileServiceCore" class="com.cmb.pms.core.service.impl.FileServiceCoreImpl">
+		<property name="fileInfoDAO" ref="fileInfoDAO" />
+	</bean>
+	
+	<bean id="noteServiceCore" class="com.cmb.pms.core.service.impl.NoteServiceCoreImpl">
+		<property name="noteDAO" ref="noteDAO" />
+	</bean>
+</beans>

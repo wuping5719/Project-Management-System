@@ -1,0 +1,201 @@
+@charset "utf-8";
+
+body,div,span,h1,h2,h3,h4,h5,h6,p,img,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td {
+  padding:0;
+  margin:0;
+  position: relative; 
+}
+
+body{
+	background-color: #eee;
+	overflow-x: hidden; 
+}
+
+#container {
+	position: relative;
+	min-height: 90%;
+	width: 100%;
+	height: 880px;
+	background: #606060; 
+	font-family: Microsoft YaHei;
+	line-height: 1.5;
+	font-size: 1.0em;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	font-size-adjust: none;
+	font-stretch: normal;
+}
+
+#head{
+    background-color: #77bbff;
+}
+
+#main_top {
+	position: relative;
+	height: 60px; 
+	width: 100%;
+	background: #77bbff;
+	margin:0; 
+	font-size: 1.2em;
+	font-weight:blod;
+}
+
+#logo {
+	position: absolute;
+	margin-left: 5%;
+	margin-top: 0.6%;
+	width: 15%;
+	height: 37px;
+}
+
+.navi {
+	position: absolute;
+	height: 60px;
+    margin-left: 5%;
+}
+
+.hg_nav {
+	position: absolute;
+	width: 80%;
+	height: 60px;
+	margin-left: 20%;
+}
+
+.hg_nav li {
+	margin: 0;
+	float: left;
+	display: block;
+	line-height: 60px;
+	height: 60px;
+	text-align: center;
+	vertical-align: middle;
+	margin-left: 10px;
+}
+.hg_nav li a {
+   text-decoration:none; 
+   color:#fff;
+}
+
+.hg_sch {
+	height: 28px;
+	margin-top: 1%;
+	margin-left: 88%;
+	width: 200px;
+}
+
+.hg_sch a {
+	background: transparent;
+	color: #ffffff;
+	height: 100%;
+	font-size: 0.88em;
+	margin-left: 20px;
+	margin-top: 7px;
+	float: left;
+}
+
+/* Main Div */
+#main {
+  background-color: #eee;
+  text-align: center;
+  width: 100%;  
+  height: 860px;
+}
+#menu {
+  float: left;
+  width: 13%;  
+  height: 100%;
+  background-color: #C6E2FF;
+  font-size:1.0em;
+  text-align: left;
+}
+
+#panel {
+  float: left;
+  width: 87%;  
+  height: 95%;
+  background-color: #eeffff; 
+}
+
+#footer {
+  position:  relative; 
+  bottom: 0;
+  border-top: 1px solid #000; 
+  text-align: center; 
+  height: 10px; 
+  width: 100%;
+}
+#footer p {
+   margin: 1% 35%; 
+}
+
+/* Customize the nav-justified links to be fill the entire space of the .navbar */
+
+.nav-justified {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.nav-justified > li > a {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-bottom: 0;
+  font-weight: bold;
+  color: #777;
+  text-align: center;
+  background-color: #e5e5e5; /* Old browsers */
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#e5e5e5));
+  background-image: -webkit-linear-gradient(top, #f5f5f5 0%, #e5e5e5 100%);
+  background-image:      -o-linear-gradient(top, #f5f5f5 0%, #e5e5e5 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(top), color-stop(0%, #f5f5f5), to(#e5e5e5));
+  background-image:         linear-gradient(top, #f5f5f5 0%, #e5e5e5 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
+  background-repeat: repeat-x; /* Repeat the gradient */
+  border-bottom: 1px solid #d5d5d5;
+}
+
+.nav-justified > li:first-child > a {
+  border-radius: 5px 5px 0 0;
+}
+.nav-justified > li:last-child > a {
+  border-bottom: 0;
+  border-radius: 0 0 5px 5px;
+}
+
+@media (min-width: 768px) {
+  .nav-justified {
+    max-height: 52px;
+  }
+  .nav-justified > li > a {
+    border-right: 1px solid #d5d5d5;
+    border-left: 1px solid #fff;
+  }
+  .nav-justified > li:first-child > a {
+    border-left: 0;
+    border-radius: 5px 0 0 5px;
+  }
+  .nav-justified > li:last-child > a {
+    border-right: 0;
+    border-radius: 0 5px 5px 0;
+  }
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen {
+  /* Remove the padding we set earlier */
+  .masthead,
+  .marketing,
+  .footer {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+#local {
+	height:4%;
+	margin-left: 8%;
+	margin-top: 0%;
+	margin-bottom: 0.5%;	
+	text-align:left;
+	border:1px;
+}

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmb.pms.core.dao.UserRoleDAO" >
+  <resultMap id="BaseResultMap" type="UserRole" >
+    <id column="UserRoleID" property="userRoleID" jdbcType="INTEGER" />
+    <result column="UserID" property="userID" jdbcType="INTEGER" />
+    <result column="RoleID" property="roleID" jdbcType="INTEGER" />
+    <result column="CreateTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="ModifyTime" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="Creator" property="creator" jdbcType="VARCHAR" />
+    <result column="Modifier" property="modifier" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    UserRoleID, UserID, RoleID, CreateTime, ModifyTime, Creator, Modifier
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from userrole
+    where UserRoleID = #{userRoleID,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectUserRoles" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from userrole
+    where UserID = #{userID,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from userrole
+    where UserRoleID = #{userRoleID,jdbcType=INTEGER}
+  </delete>
+  
+  <delete id="deleteUserRoleByUserID" parameterType="java.lang.Integer" >
+    delete from userrole
+    where UserID = #{userID,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="UserRole" >
+    insert into userrole (UserRoleID, UserID, RoleID, 
+      CreateTime, ModifyTime, Creator, 
+      Modifier)
+    values (#{userRoleID,jdbcType=INTEGER}, #{userID,jdbcType=INTEGER}, #{roleID,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, 
+      #{modifier,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="UserRole" >
+    insert into userrole
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userRoleID != null" >
+        UserRoleID,
+      </if>
+      <if test="userID != null" >
+        UserID,
+      </if>
+      <if test="roleID != null" >
+        RoleID,
+      </if>
+      <if test="createTime != null" >
+        CreateTime,
+      </if>
+      <if test="modifyTime != null" >
+        ModifyTime,
+      </if>
+      <if test="creator != null" >
+        Creator,
+      </if>
+      <if test="modifier != null" >
+        Modifier,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userRoleID != null" >
+        #{userRoleID,jdbcType=INTEGER},
+      </if>
+      <if test="userID != null" >
+        #{userID,jdbcType=INTEGER},
+      </if>
+      <if test="roleID != null" >
+        #{roleID,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null" >
+        #{modifier,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="UserRole" >
+    update userrole
+    <set >
+      <if test="userID != null" >
+        UserID = #{userID,jdbcType=INTEGER},
+      </if>
+      <if test="roleID != null" >
+        RoleID = #{roleID,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        ModifyTime = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        Creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="modifier != null" >
+        Modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where UserRoleID = #{userRoleID,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="UserRole" >
+    update userrole
+    set UserID = #{userID,jdbcType=INTEGER},
+      RoleID = #{roleID,jdbcType=INTEGER},
+      CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      ModifyTime = #{modifyTime,jdbcType=TIMESTAMP},
+      Creator = #{creator,jdbcType=VARCHAR},
+      Modifier = #{modifier,jdbcType=VARCHAR}
+    where UserRoleID = #{userRoleID,jdbcType=INTEGER}
+  </update>
+</mapper>

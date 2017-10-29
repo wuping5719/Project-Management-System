@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmb.pms.core.dao.PublicActivityDAO" >
+  <resultMap id="BaseResultMap" type="PublicActivity" >
+    <id column="ActID" property="actID" jdbcType="INTEGER" />
+    <result column="ActContent" property="actContent" jdbcType="VARCHAR" />
+    <result column="ActPerInCharge" property="actPerInCharge" jdbcType="VARCHAR" />
+    <result column="ActProgress" property="actProgress" jdbcType="VARCHAR" />
+    <result column="ActCreTime" property="actCreTime" jdbcType="TIMESTAMP" />
+    <result column="ActModTime" property="actModTime" jdbcType="TIMESTAMP" />
+    <result column="ActCreator" property="actCreator" jdbcType="VARCHAR" />
+    <result column="ActModifier" property="actModifier" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    ActID, ActContent, ActPerInCharge, ActProgress, ActCreTime, ActModTime, ActCreator, 
+    ActModifier
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from publicactivity
+    where ActID = #{actID,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectTotalNum" resultType="Integer" >
+    select count(*) from publicactivity
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="actContent != null and actContent != '' ">
+			and ActContent LIKE CONCAT(CONCAT('%', #{actContent}),'%')
+		</if>
+		<if test="actPerInCharge != null and actPerInCharge != '' ">
+		    and ActPerInCharge LIKE CONCAT(CONCAT('%', #{actPerInCharge}),'%')
+		</if>
+		<if test="actProgress != null and actProgress != '' ">
+		    and ActProgress LIKE CONCAT(CONCAT('%', #{actProgress}),'%')
+		</if>
+	</trim>
+  </select>
+  
+  <select id="selectPublicActivities" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from publicactivity
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="actContent != null and actContent != '' ">
+			and ActContent LIKE CONCAT(CONCAT('%', #{actContent}),'%')
+		</if>
+		<if test="actPerInCharge != null and actPerInCharge != '' ">
+		    and ActPerInCharge LIKE CONCAT(CONCAT('%', #{actPerInCharge}),'%')
+		</if>
+		<if test="actProgress != null and actProgress != '' ">
+		    and ActProgress LIKE CONCAT(CONCAT('%', #{actProgress}),'%')
+		</if>
+	</trim>
+	Limit #{startIndex}, #{pageSize}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from publicactivity
+    where ActID = #{actID,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="com.cmb.pms.core.model.PublicActivity" >
+    insert into publicactivity (ActID, ActContent, ActPerInCharge, 
+      ActProgress, ActCreTime, ActModTime, 
+      ActCreator, ActModifier)
+    values (#{actID,jdbcType=INTEGER}, #{actContent,jdbcType=VARCHAR}, #{actPerInCharge,jdbcType=VARCHAR}, 
+      #{actProgress,jdbcType=VARCHAR}, #{actCreTime,jdbcType=TIMESTAMP}, #{actModTime,jdbcType=TIMESTAMP}, 
+      #{actCreator,jdbcType=VARCHAR}, #{actModifier,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="PublicActivity" >
+    insert into publicactivity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="actID != null" >
+        ActID,
+      </if>
+      <if test="actContent != null" >
+        ActContent,
+      </if>
+      <if test="actPerInCharge != null" >
+        ActPerInCharge,
+      </if>
+      <if test="actProgress != null" >
+        ActProgress,
+      </if>
+      <if test="actCreTime != null" >
+        ActCreTime,
+      </if>
+      <if test="actModTime != null" >
+        ActModTime,
+      </if>
+      <if test="actCreator != null" >
+        ActCreator,
+      </if>
+      <if test="actModifier != null" >
+        ActModifier,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="actID != null" >
+        #{actID,jdbcType=INTEGER},
+      </if>
+      <if test="actContent != null" >
+        #{actContent,jdbcType=VARCHAR},
+      </if>
+      <if test="actPerInCharge != null" >
+        #{actPerInCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="actProgress != null" >
+        #{actProgress,jdbcType=VARCHAR},
+      </if>
+      <if test="actCreTime != null" >
+        #{actCreTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actModTime != null" >
+        #{actModTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actCreator != null" >
+        #{actCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="actModifier != null" >
+        #{actModifier,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="PublicActivity" >
+    update publicactivity
+    <set >
+      <if test="actContent != null" >
+        ActContent = #{actContent,jdbcType=VARCHAR},
+      </if>
+      <if test="actPerInCharge != null" >
+        ActPerInCharge = #{actPerInCharge,jdbcType=VARCHAR},
+      </if>
+      <if test="actProgress != null" >
+        ActProgress = #{actProgress,jdbcType=VARCHAR},
+      </if>
+      <if test="actCreTime != null" >
+        ActCreTime = #{actCreTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actModTime != null" >
+        ActModTime = #{actModTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actCreator != null" >
+        ActCreator = #{actCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="actModifier != null" >
+        ActModifier = #{actModifier,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ActID = #{actID,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="PublicActivity" >
+    update publicactivity
+    set ActContent = #{actContent,jdbcType=VARCHAR},
+      ActPerInCharge = #{actPerInCharge,jdbcType=VARCHAR},
+      ActProgress = #{actProgress,jdbcType=VARCHAR},
+      ActCreTime = #{actCreTime,jdbcType=TIMESTAMP},
+      ActModTime = #{actModTime,jdbcType=TIMESTAMP},
+      ActCreator = #{actCreator,jdbcType=VARCHAR},
+      ActModifier = #{actModifier,jdbcType=VARCHAR}
+    where ActID = #{actID,jdbcType=INTEGER}
+  </update>
+</mapper>

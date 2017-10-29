@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cmb.pms.core.dao.RoleDAO" >
+  <resultMap id="BaseResultMap" type="Role" >
+    <id column="RoleID" property="roleID" jdbcType="INTEGER" />
+    <result column="RoleName" property="roleName" jdbcType="VARCHAR" />
+    <result column="RoleType" property="roleType" jdbcType="CHAR" />
+    <result column="RoleDescription" property="roleDescription" jdbcType="VARCHAR" />
+    <result column="ParentRoleID" property="parentRoleID" jdbcType="INTEGER" />
+    <result column="RoleCreTime" property="roleCreTime" jdbcType="TIMESTAMP" />
+    <result column="RoleModTime" property="roleModTime" jdbcType="TIMESTAMP" />
+    <result column="RoleCreator" property="roleCreator" jdbcType="VARCHAR" />
+    <result column="RoleModifier" property="roleModifier" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    RoleID, RoleName, RoleType, RoleDescription, ParentRoleID, RoleCreTime, RoleModTime, 
+    RoleCreator, RoleModifier
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from role
+    where RoleID = #{roleID,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectTotalNum" resultType="Integer" >
+    select count(*) from role
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="roleName != null and roleName != '' ">
+			and RoleName LIKE CONCAT(CONCAT('%', #{roleName}),'%')
+		</if>
+		<if test="roleType != null and roleType != '' ">
+		    and RoleType = #{roleType,jdbcType=CHAR}
+		</if>
+	</trim>
+  </select>
+  
+  <select id="selectRoles" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from role
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+		<if test="roleName != null and roleName != '' ">
+			and RoleName LIKE CONCAT(CONCAT('%', #{roleName}),'%')
+		</if>
+		<if test="roleType != null and roleType != '' ">
+		    and RoleType = #{roleType,jdbcType=CHAR}
+		</if>
+	</trim>
+	Limit #{startIndex}, #{pageSize}
+  </select>
+  
+  <select id="selectAllRoles" resultMap="BaseResultMap" >
+    select <include refid="Base_Column_List" /> from role
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from role
+    where RoleID = #{roleID,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="Role" >
+    insert into role (RoleID, RoleName, RoleType, 
+      RoleDescription, ParentRoleID, RoleCreTime, 
+      RoleModTime, RoleCreator, RoleModifier
+      )
+    values (#{roleID,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{roleType,jdbcType=CHAR}, 
+      #{roleDescription,jdbcType=VARCHAR}, #{parentRoleID,jdbcType=INTEGER}, #{roleCreTime,jdbcType=TIMESTAMP}, 
+      #{roleModTime,jdbcType=TIMESTAMP}, #{roleCreator,jdbcType=VARCHAR}, #{roleModifier,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="Role" >
+    insert into role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleID != null" >
+        RoleID,
+      </if>
+      <if test="roleName != null" >
+        RoleName,
+      </if>
+      <if test="roleType != null" >
+        RoleType,
+      </if>
+      <if test="roleDescription != null" >
+        RoleDescription,
+      </if>
+      <if test="parentRoleID != null" >
+        ParentRoleID,
+      </if>
+      <if test="roleCreTime != null" >
+        RoleCreTime,
+      </if>
+      <if test="roleModTime != null" >
+        RoleModTime,
+      </if>
+      <if test="roleCreator != null" >
+        RoleCreator,
+      </if>
+      <if test="roleModifier != null" >
+        RoleModifier,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleID != null" >
+        #{roleid,jdbcType=INTEGER},
+      </if>
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null" >
+        #{roleType,jdbcType=CHAR},
+      </if>
+      <if test="roleDescription != null" >
+        #{roleDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="parentRoleID != null" >
+        #{parentRoleID,jdbcType=INTEGER},
+      </if>
+      <if test="roleCreTime != null" >
+        #{roleCreTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roleModTime != null" >
+        #{roleModTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roleCreator != null" >
+        #{roleCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="roleModifier != null" >
+        #{roleModifier,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="Role" >
+    update role
+    <set >
+      <if test="roleName != null" >
+        RoleName = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null" >
+        RoleType = #{roleType,jdbcType=CHAR},
+      </if>
+      <if test="roleDescription != null" >
+        RoleDescription = #{roleDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="parentRoleID != null" >
+        ParentRoleID = #{parentRoleID,jdbcType=INTEGER},
+      </if>
+      <if test="roleCreTime != null" >
+        RoleCreTime = #{roleCreTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roleModTime != null" >
+        RoleModTime = #{roleModTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roleCreator != null" >
+        RoleCreator = #{roleCreator,jdbcType=VARCHAR},
+      </if>
+      <if test="roleModifier != null" >
+        RoleModifier = #{roleModifier,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where RoleID = #{roleID,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="Role" >
+    update role
+    set RoleName = #{roleName,jdbcType=VARCHAR},
+      RoleType = #{roleType,jdbcType=CHAR},
+      RoleDescription = #{roleDescription,jdbcType=VARCHAR},
+      ParentRoleID = #{parentRoleID,jdbcType=INTEGER},
+      RoleCreTime = #{roleCreTime,jdbcType=TIMESTAMP},
+      RoleModTime = #{roleModTime,jdbcType=TIMESTAMP},
+      RoleCreator = #{roleCreator,jdbcType=VARCHAR},
+      RoleModifier = #{roleModifier,jdbcType=VARCHAR}
+    where RoleID = #{roleID,jdbcType=INTEGER}
+  </update>
+</mapper>
