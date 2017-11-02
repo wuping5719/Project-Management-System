@@ -142,7 +142,7 @@
 		</div>
 
 		<div id="footer">
-			<p>Copyright &copy; 2017 吴平 版权所有</p>
+			<p>Copyright &copy; 2017 招商银行 版权所有</p>
 		</div>
 	</div>
 
@@ -686,80 +686,105 @@
 	    	                sweetAlert("提示", "需求编号不能为空！", "warning");
 	    	                return;
 	    	            } else if (newReqNum != null && (!(/(R){1}[0-9]{6}$/g).test(newReqNum.trim()))){
-	    	            	 sweetAlert("提示", "需求编号格式不正确！\n 正确格式如：R171525", "warning");
-	    	            	 return;
+	    	            	sweetAlert("提示", "需求编号格式不正确！\n 正确格式如：R171525", "warning");
+	    	            	return;
 	    	            }
-	    	            // 需求编号判重校验
-	    	            $.ajax({
-	    	                type: "POST",
-	    	                url: "<%=basePath%>isHasReq.do",
-	    	                data : { newReqNum : newReqNum },
-	    	                success: function (msg) {
-	    	                	   if (msg == "1") {
-	    	                		   sweetAlert("提示", "该需求编号已被暂用，请重新输入！", "warning");
-	    	                		   return;
-	    	                	   } else {
-	    	                		   var newReqName = document.getElementById("newReqName").value;   // 需求名称
-	    	   	    	               if(newReqName == "") {
-	    	   	    	                   sweetAlert("提示","需求名称不能为空！", "warning");
-	    	   	    	                   return;
-	    	   	    	               }
-	    	   	    	               var newReqState = document.getElementById("newReqState").value;    // 状态
-	    	   	    	               if(newReqState == "") {
-	    	   	    	                   sweetAlert("提示", "状态不能为空！", "warning");
-	    	   	    	                   return;
-	    	   	    	               }
-	    	   	    	               var newReqAssessmentDate = document.getElementById("newReqAssessmentDate").value;   // 需求评估日期
-	    	   	    	               if(newReqAssessmentDate == "") {
-	    	   	    	                   sweetAlert("提示", "需求评估日期不能为空！", "warning");
-	    	   	    	                   return;
-	    	   	    	               }
-	    	   	    	               var newReqScheduleStartDate = document.getElementById("newReqScheduleStartDate").value;   // 计划启动日期
-	    	   	    	               var newReqScheduleDate = document.getElementById("newReqScheduleDate").value;   // 排期
-	    	   	    	               var newReqStartDate = document.getElementById("newReqStartDate").value;   // 立项时间
-	    	   	    	               var newReqOrganizeType = document.getElementById("newReqOrganizeType").value;   // 立项时间
-	    	   	    	               var newReqPriority = document.getElementById("newReqPriority").value;   // 优先级
-	    	   	    	               var newReqContent = document.getElementById("newReqContent").value;   // 主要内容
-	    	   	    	               var newReqPerInCharge = document.getElementById("newReqPerInCharge").value;   // 负责人
-	    	   	    	               if (newReqPerInCharge == "") {
-	    	   	    	                   sweetAlert("提示", "负责人不能为空！", "warning");
-	    	   	    	                   return;
-	    	   	    	               }
-	    	   	    	               var newReqMember = document.getElementById("newReqMember").value;   // 其他成员
-	    	   	    	               var newReqAssessment = document.getElementById("newReqAssessment").value;   // 评估意见
-	    	   	    	               var newReqAuthor = document.getElementById("newReqAuthor").value;   // 需求提交人
-	    	   	    	               var newReqBusDepart = document.getElementById("newReqBusDepart").value;  // 业务部门
-	    	   	    	               var newReqComment = document.getElementById("newReqComment").value;  // 备注
-	    	   	      	         
-	    	   	      	               $.ajax({
-	    	   	      	                    type: "POST",
-	    	   	      	                    url: "<%=basePath%>updateReq.do",
-	    	   	      	                    data : { reqID : reqID, 
-	    	   	      	                	     newReqNum : newReqNum, newReqName : newReqName,
-	    	       	                	         newReqState : newReqState, newReqAssessmentDate : newReqAssessmentDate,
-	    	       	                	         newReqScheduleStartDate : newReqScheduleStartDate, newReqScheduleDate : newReqScheduleDate,
-	    	       	                	         newReqStartDate : newReqStartDate, newReqOrganizeType : newReqOrganizeType,
-	    	       	                	         newReqPriority : newReqPriority, newReqContent : newReqContent,
-	    	       	                	         newReqPerInCharge : newReqPerInCharge, newReqMember : newReqMember,
-	    	       	                	         newReqAssessment : newReqAssessment, newReqAuthor : newReqAuthor,
-	    	       		      	                 newReqBusDepart : newReqBusDepart, newReqComment : newReqComment
-	    	   	      	                    },
-	    	   	      	                    success: function () {
-	    	   	      	                	    sweetAlert("提示", "更新需求成功！", "success");
-	    	   	      	                	     window.location.href = "<%=basePath%>loadReqsList.do";
-	    	   	                            },
-	    	   	  						    error : function(e) {
-	    	   	  								  sweetAlert("更新需求失败：", e, "error");
-	    	   	  						    }
-	    	   	  				       });
-	    	                	   }
-	                        },
-							error : function(e) {
-									sweetAlert("校验需求编号失败：", e, "error");
-									return;
-							}
-					    });
-	    	            
+	    	            var newReqState = document.getElementById("newReqState").value;    // 状态
+	    	            if(newReqState == "") {
+	    	                sweetAlert("提示", "状态不能为空！", "warning");
+	    	                return;
+	    	            }
+	    	            var newReqName = document.getElementById("newReqName").value;   // 需求名称
+	    	            if(newReqName == "") {
+	    	                sweetAlert("提示","需求名称不能为空！", "warning");
+	    	                return;
+	    	            }
+	    	            var newReqAssessmentDate = document.getElementById("newReqAssessmentDate").value;   // 需求评估日期
+	    	            if(newReqAssessmentDate == "") {
+	    	                sweetAlert("提示", "需求评估日期不能为空！", "warning");
+	    	                return;
+	    	            }
+	    	            var newReqScheduleStartDate = document.getElementById("newReqScheduleStartDate").value;   // 计划启动日期
+	    	            var newReqScheduleDate = document.getElementById("newReqScheduleDate").value;   // 排期
+	    	            var newReqStartDate = document.getElementById("newReqStartDate").value;   // 立项时间
+	    	            var newReqOrganizeType = document.getElementById("newReqOrganizeType").value;   // 立项时间
+	    	            var newReqPriority = document.getElementById("newReqPriority").value;   // 优先级
+	    	            var newReqContent = document.getElementById("newReqContent").value;   // 主要内容
+	    	            var newReqPerInCharge = document.getElementById("newReqPerInCharge").value;   // 负责人
+	    	            if (newReqPerInCharge == "") {
+	    	                sweetAlert("提示", "负责人不能为空！", "warning");
+	    	                return;
+	    	            }
+	    	            var newReqMember = document.getElementById("newReqMember").value;   // 其他成员
+	    	            var newReqAssessment = document.getElementById("newReqAssessment").value;   // 评估意见
+	    	            var newReqAuthor = document.getElementById("newReqAuthor").value;   // 需求提交人
+	    	            var newReqBusDepart = document.getElementById("newReqBusDepart").value;  // 业务部门
+	    	            var newReqComment = document.getElementById("newReqComment").value;  // 备注
+	    	           
+	    	            // 只有 “意向性” 状态的需求允许修改需求编号
+	    	            if ("意向性" == newReqState) {
+	    	            	// 需求编号判重校验
+		    	            $.ajax({
+		    	                type: "POST",
+		    	                url: "<%=basePath%>isHasReq.do",
+		    	                data : { newReqNum : newReqNum },
+		    	                success: function (msg) {
+		    	                	   if (msg == "1") {
+		    	                		   sweetAlert("提示", "该需求编号已被暂用，请重新输入！", "warning");
+		    	                		   return;
+		    	                	   } else {
+		    	   	      	               $.ajax({
+		    	   	      	                    type: "POST",
+		    	   	      	                    url: "<%=basePath%>updateReq.do",
+		    	   	      	                    data : { reqID : reqID, 
+		    	   	      	                	     newReqNum : newReqNum, newReqName : newReqName,
+		    	       	                	         newReqState : newReqState, newReqAssessmentDate : newReqAssessmentDate,
+		    	       	                	         newReqScheduleStartDate : newReqScheduleStartDate, newReqScheduleDate : newReqScheduleDate,
+		    	       	                	         newReqStartDate : newReqStartDate, newReqOrganizeType : newReqOrganizeType,
+		    	       	                	         newReqPriority : newReqPriority, newReqContent : newReqContent,
+		    	       	                	         newReqPerInCharge : newReqPerInCharge, newReqMember : newReqMember,
+		    	       	                	         newReqAssessment : newReqAssessment, newReqAuthor : newReqAuthor,
+		    	       		      	                 newReqBusDepart : newReqBusDepart, newReqComment : newReqComment
+		    	   	      	                    },
+		    	   	      	                    success: function () {
+		    	   	      	                	    sweetAlert("提示", "更新需求成功！", "success");
+		    	   	      	                	     window.location.href = "<%=basePath%>loadReqsList.do";
+		    	   	                            },
+		    	   	  						    error : function(e) {
+		    	   	  								  sweetAlert("更新需求失败：", e, "error");
+		    	   	  						    }
+		    	   	  				       });
+		    	                	   }
+		                        },
+								error : function(e) {
+										sweetAlert("校验需求编号失败：", e, "error");
+										return;
+								}
+						    });
+	    	            } else {
+	    	            	$.ajax({
+   	      	                    type: "POST",
+   	      	                    url: "<%=basePath%>updateReq.do",
+   	      	                    data : { reqID : reqID, 
+   	      	                         newReqNum : newReqNum, newReqName : newReqName,
+       	                	         newReqState : newReqState, newReqAssessmentDate : newReqAssessmentDate,
+       	                	         newReqScheduleStartDate : newReqScheduleStartDate, newReqScheduleDate : newReqScheduleDate,
+       	                	         newReqStartDate : newReqStartDate, newReqOrganizeType : newReqOrganizeType,
+       	                	         newReqPriority : newReqPriority, newReqContent : newReqContent,
+       	                	         newReqPerInCharge : newReqPerInCharge, newReqMember : newReqMember,
+       	                	         newReqAssessment : newReqAssessment, newReqAuthor : newReqAuthor,
+       		      	                 newReqBusDepart : newReqBusDepart, newReqComment : newReqComment
+   	      	                    },
+   	      	                    success: function () {
+   	      	                	    sweetAlert("提示", "更新需求成功！", "success");
+   	      	                	     window.location.href = "<%=basePath%>loadReqsList.do";
+   	                            },
+   	  						    error : function(e) {
+   	  								  sweetAlert("更新需求失败：", e, "error");
+   	  						    }
+   	  				       });
+	    	            }
+	    	           
 	  				    $(this).dialog("close");
 	  				   }
 	  			}, {
